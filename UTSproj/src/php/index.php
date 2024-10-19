@@ -27,9 +27,6 @@
     <div class="row justify-content-center">
         <?php include 'event.php'?>
       </div>
-
-    
-
         <div class="py-6 px-6 text-center">
           <p class="mb-0 fs-4">Design and Developed by Team Jokowi</p>
         </div>

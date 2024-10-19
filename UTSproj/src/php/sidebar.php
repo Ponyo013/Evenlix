@@ -1,12 +1,11 @@
-    <!-- Sidebar Start -->
-    <aside class="left-sidebar">
+<!-- Sidebar Start -->
+<aside class="left-sidebar">
 <!-- Sidebar scroll -->
-<div>
+      <div>
         <div class="d-flex align-items-center">
         <a href="./index.php" class="">
-        <img class="logo" src="../assets/images/logos/logo.png" alt="Logo" style="width: 250px; height: auto;" />
-
-</a>
+          <img class="logo" src="../assets/images/logos/logo.png" alt="Logo" style="width: 250px; height: auto;" />
+        </a>
           <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
             <i class="ti ti-x fs-8"></i>
           </div>
@@ -14,7 +13,7 @@
 
 
         <!-- Sidebar navigation-->
-        <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+        <nav class="sidebar-nav scroll-sidebar" data-simplebar="">  
           <ul id="sidebarnav">
             <li class="nav-small-cap">
               <span class="hide-menu">Home</span>
@@ -63,5 +62,5 @@
         <!-- End Sidebar navigation -->
       </div>
       <!-- End Sidebar scroll-->
-    </aside>
-    <!--  Sidebar End -->
+</aside>
+<!--  Sidebar End -->

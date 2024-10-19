@@ -27,7 +27,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `events`
 --
 
-CREATE TABLE `events` (
+CREATE TABLE event_registration.`events` (
   `id_events` int(11) NOT NULL,
   `event_name` varchar(255) NOT NULL,
   `date_time` datetime NOT NULL,
@@ -45,7 +45,7 @@ CREATE TABLE `events` (
 --
 -- Indexes for table `events`
 --
-ALTER TABLE `events`
+ALTER TABLE event_registration.`events`
   ADD PRIMARY KEY (`id_events`),
   ADD UNIQUE KEY `created_at` (`created_at`);
 
@@ -56,7 +56,7 @@ ALTER TABLE `events`
 --
 -- AUTO_INCREMENT for table `events`
 --
-ALTER TABLE `events`
+ALTER TABLE event_registration.`events`
   MODIFY `id_events` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
