@@ -4,7 +4,6 @@ require "connect.php";
 $sql = "SELECT * FROM events";
 $result = $conn->query($sql);
 
-
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         echo "<div class='col-lg-5 mb-5 mx-4'>";
@@ -36,35 +35,43 @@ if ($result->num_rows > 0) {
         echo "</div>";
         echo "</div>"; 
 
-          $description = $row['description'];
-          $word_limit = 30;
-          $description_words = explode(" ", $description);
+        // Description handling
+        $description = $row['description'];
+        $word_limit = 30;
+        $description_words = explode(" ", $description);
 
-          if (count($description_words) > $word_limit) {
-              $short_description = implode(" ", array_slice($description_words, 0, $word_limit)) . "...";
-              $full_description = $description;
-          } else {
-              $short_description = $description;
-              $full_description = '';
-          }
+        if (count($description_words) > $word_limit) {
+            $short_description = implode(" ", array_slice($description_words, 0, $word_limit)) . "...";
+            $full_description = $description;
+        } else {
+            $short_description = $description;
+            $full_description = '';
+        }
 
-          echo "<p class='d-block my-4 fs-5 text-dark fw-semibold' id='short-description-" . $row['id_events'] . "'>";
-          echo $short_description;
-          if ($full_description) {
-              echo "<br>";
-              echo "<a href='javascript:void(0)' class='read-more-btn' id='read-more-btn-" . $row['id_events'] . "' onclick='toggleText(" . $row['id_events'] . ")'>Read more</a>";
-          }
-          echo "</p>";
+        // Combine the description and the "Read more" button in a single paragraph
+        echo "<p class='my-4 fs-5 text-dark fw-semibold' id='description-" . $row['id_events'] . "'>";
+        echo "<span id='short-description-" . $row['id_events'] . "'>" . $short_description . "</span>";
+        
+        if ($full_description) {
+            echo "<span class='d-none' id='full-description-" . $row['id_events'] . "'>" . $full_description . "</span>";
+        }
 
-          echo "<div class='d-flex align-items-center gap-4'>";
-          echo "<div class='d-flex align-items-center gap-2'>";
-          echo "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='icon icon-tabler icons-tabler-outline icon-tabler-map-pin'>";
-          echo "<path stroke='none' d='M0 0h24v24H0z' fill='none'/>";
-          echo "<path d='M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0' />";
-          echo "<path d='M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z' />";
-          echo "</svg>" . $row['location'];
-          echo "</div>";
-          
+        // Add "Read more/Read less" button next to the description
+        if ($full_description) {
+            echo "<a href='javascript:void(0)' class='read-more-btn' id='read-more-btn-" . $row['id_events'] . "' onclick='toggleText(" . $row['id_events'] . ")'> read more</a>";
+        }
+
+        echo "</p>"; 
+
+        echo "<div class='d-flex align-items-center gap-4'>";
+        echo "<div class='d-flex align-items-center gap-2'>";
+        echo "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='icon icon-tabler icons-tabler-outline icon-tabler-map-pin'>";
+        echo "<path stroke='none' d='M0 0h24v24H0z' fill='none'/>";
+        echo "<path d='M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0' />";
+        echo "<path d='M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z' />";
+        echo "</svg>" . $row['location'];
+        echo "</div>";
+
         echo "<div class='d-flex align-items-center fs-2 ms-auto'>";
         echo "<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='icon icon-tabler icons-tabler-outline icon-tabler-user'>";
         echo "<path stroke='none' d='M0 0h24v24H0z' fill='none'/>";
@@ -72,7 +79,7 @@ if ($result->num_rows > 0) {
         echo "<path d='M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2' />";
         echo "</svg>" . $row['max_capacity'];
         echo "</div>";
-        echo "</div>"; 
+        echo "</div>";
 
         echo "</div>"; 
         echo "</div>"; 
@@ -89,13 +96,18 @@ $conn->close();
 function toggleText(id_events) {
     var shortDescription = document.getElementById('short-description-' + id_events);
     var fullDescription = document.getElementById('full-description-' + id_events);
-    
-    if (fullDescription.style.display === 'none') {
-        fullDescription.style.display = 'block';
-        shortDescription.style.display = 'none';
+    var readMoreBtn = document.getElementById('read-more-btn-' + id_events);
+
+    if (fullDescription.classList.contains('d-none')) {
+        // Show full description and change button text to 'Read less'
+        fullDescription.classList.remove('d-none');
+        shortDescription.classList.add('d-none');
+        readMoreBtn.innerText = ' read less';
     } else {
-        fullDescription.style.display = 'none';
-        shortDescription.style.display = 'block';
+        // Show short description and change button text to 'Read more'
+        fullDescription.classList.add('d-none');
+        shortDescription.classList.remove('d-none');
+        readMoreBtn.innerText = ' read more';
     }
 }
 </script>
