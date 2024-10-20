@@ -13,18 +13,22 @@
 <body>
   <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
     data-sidebar-position="fixed" data-header-position="fixed">
-      <?php include 'sidebar.php'?> 
-    
-      <div class="body-wrapper">
-        <?php include 'header.php'?>
-        <div class="container-fluid">
-            <div class="row justify-content-center">
-                <?php include 'edit.php'?>
-            </div>
-            <div class="py-6 px-6 text-center">
-              <p class="mb-0 fs-4">Design and Developed by Team Jokowi</p>
-            </div>
+
+    <!-- Sidebar -->
+    <?php include 'sidebar.php'; ?> 
+
+    <div class="body-wrapper">
+      <!-- Header -->
+      <?php include 'header.php'; ?>
+
+      <div class="container-fluid">
+        <div class="row justify-content-center">
+          <?php include 'edit.php'; ?>
         </div>
+        <div class="py-6 px-6 text-center">
+          <p class="mb-0 fs-4">Design and Developed by Team Jokowi</p>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -37,7 +41,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-        <form id="editEventForm" method="POST" action="edit-process.php" enctype="multipart/form-data">
+          <form id="editEventForm" method="POST" action="edit-process.php" enctype="multipart/form-data">
             <input type="hidden" name="event_id" id="event_id">
             <div class="form-group mb-3">
               <label for="event-name">Event Name</label>
@@ -62,14 +66,14 @@
             <div class="form-group mb-3">
               <label for="Foto">Event Image</label>
               <input type="file" name="Foto" id="Foto" class="form-control">
-              <img id="event-image-preview" style="max-width:100px; margin-top:10px;" />
+              <img id="event-image-preview" style="max-width: 100px; margin-top: 10px;" />
             </div>
             <div class="form-group mb-3">
               <label for="status">Event Status</label>
               <select name="status" id="status" class="form-control" required>
-              <option value="open">Open</option>
-              <option value="closed">Closed</option>
-              <option value="canceled">Canceled</option>
+                <option value="open">Open</option>
+                <option value="closed">Closed</option>
+                <option value="canceled">Canceled</option>
               </select>
             </div>
             <button type="submit" class="btn btn-primary">Update Event</button>
@@ -79,6 +83,7 @@
     </div>
   </div>
 
+  <!-- JavaScript Files -->
   <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
   <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
   <script src="../assets/libs/apexcharts/dist/apexcharts.min.js"></script>

@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $photo = '';
     $isPhotoUploaded = false;
     if (isset($_FILES['Foto']) && $_FILES['Foto']['error'] === UPLOAD_ERR_OK) {
-        $targetDir = "uploads/";
+        $targetDir = "assets/images/blog/";
         $photo = $targetDir . basename($_FILES['Foto']['name']);
         move_uploaded_file($_FILES['Foto']['tmp_name'], $photo);
         $isPhotoUploaded = true;

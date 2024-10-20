@@ -127,25 +127,4 @@ $conn->close();
 
         }); 
     });
-
-    document.getElementById('editEventForm').addEventListener('submit', function (event) {
-    event.preventDefault();
-
-    const formData = new FormData(this);
-
-    fetch('update_event.php', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.text())
-    .then(data => {
-        alert(data); 
-        location.reload(); 
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('There was an error updating the event.');
-    });
-});
-
 </script>

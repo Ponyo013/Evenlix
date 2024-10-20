@@ -10,23 +10,26 @@
 </head>
 
 <body>
-  <!--  Body Wrapper -->
+  <!-- Body Wrapper -->
   <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
     data-sidebar-position="fixed" data-header-position="fixed">
-    <!--  Sidebar -->
-    <?php include 'sidebar.php' ?>
 
-    <!--  Main wrapper -->
+    <!-- Sidebar -->
+    <?php include 'sidebar.php'; ?>
+
+    <!-- Main Wrapper -->
     <div class="body-wrapper">
 
-      <!--  Header -->
-      <?php include 'header.php' ?>
+      <!-- Header -->
+      <?php include 'header.php'; ?>
+
       <div class="container-fluid">
 
-        <!--  Event -->
+        <!-- Event -->
         <div class="row justify-content-center">
-          <?php include 'event.php' ?>
+          <?php include 'event.php'; ?>
         </div>
+
         <div class="py-6 px-6 text-center">
           <p class="mb-0 fs-4">Design and Developed by Team Jokowi</p>
         </div>
@@ -34,6 +37,7 @@
       </div>
     </div>
 
+    <!-- Scripts -->
     <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
     <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/libs/apexcharts/dist/apexcharts.min.js"></script>
@@ -43,6 +47,7 @@
     <script src="../assets/js/dashboard.js"></script>
     <script src="../assets/js/read.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
+  </div>
 </body>
 
 </html>

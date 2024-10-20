@@ -23,29 +23,27 @@
       <!--  Header -->
       <?php include 'header.php'?>
     <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div>
+                <table id="viewRegistrant" class="table table-striped" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Event Name</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Registrant</th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-      <!--  Event -->
-    <div class="row justify-content-center">
-        <div>
-            <table id="viewRegistrant" class="table table-striped" style="width:100%">
-                <thead>
-                    <tr>
-                        <th>Event Name</th>
-                        <th>Date</th>
-                        <th>Status</th>
-                        <th>Registrant</th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
+            <button class="btn btn-success w-25">Export List</button>
+            <div class="py-6 px-6 text-center">
+            <p class="mb-0 fs-4">Design and Developed by Team Jokowi</p>
+            </div>
         </div>
-        <button class="btn btn-success w-25">Export List</button>
-        <div class="py-6 px-6 text-center">
-          <p class="mb-0 fs-4">Design and Developed by Team Jokowi</p>
-        </div>
-      </div>
     </div>
 
   </div>

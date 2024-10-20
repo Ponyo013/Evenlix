@@ -25,15 +25,14 @@
 
       <!-- Main Content -->
       <div class="container-fluid">
-
         <!-- Add Event Form Section -->
         <div class="row justify-content-center">
           <div class="container mt-5">
             <h2 class="text-center mb-4">Add New Event</h2>
 
             <!-- Add Event Form -->
-            <form action="upload.php" method="POST" enctype="multipart/form-data" class="mt-4">
-
+            <form action="add-process.php" method="POST" enctype="multipart/form-data" class="mt-4">
+              
               <!-- Event Name -->
               <div class="form-group mb-3">
                 <label for="event-name">Event Name</label>
@@ -84,10 +83,8 @@
               <button type="submit" class="btn btn-primary">Add Event</button>
 
             </form>
-
           </div>
         </div>
-
       </div>
     </div>
   </div>

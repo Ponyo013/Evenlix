@@ -16955,7 +16955,9 @@ ul {
 margin-bottom: 1.8 rem;
 }
 
-
+.dt-column-order{
+  display: none !important;
+}
 
 
 
