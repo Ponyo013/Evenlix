@@ -13,7 +13,7 @@ if ($result->num_rows > 0) {
         echo "<img src='" . $row['photo'] . "' class='card-img-top' alt='" . $row['event_name'] . "' style='height: 350px; object-fit: cover;'>";
 
         echo "<div class='position-absolute top-0 start-0 bg-dark rounded-bottom text-white p-1' style='font-weight: bold; font-size: 1rem;'>";
-        echo "" . ucfirst($row['status']);  // Capitalize first letter
+        echo "" . ucfirst($row['status']);  
         echo "</div>";
 
         echo "</div>";
@@ -42,7 +42,7 @@ if ($result->num_rows > 0) {
         
         echo "<p>";
         echo "<span class='short-desc' id='short-desc-" . $row['id_events'] . "'>";
-        echo substr($row['description'], 0, 100); // Display first 100 characters
+        echo substr($row['description'], 0, 100); 
         echo (strlen($row['description']) > 100) ? "..." : "";
         echo "</span>";
         echo "<span class='full-desc' id='full-desc-" . $row['id_events'] . "' style='display: none;'>";
@@ -81,21 +81,3 @@ if ($result->num_rows > 0) {
 
 $conn->close();
 ?>
-
-<script>
-function toggleDescription(id) {
-    const shortDesc = document.getElementById('short-desc-' + id);
-    const fullDesc = document.getElementById('full-desc-' + id);
-    const toggleBtn = document.getElementById('toggle-btn-' + id);
-
-    if (fullDesc.style.display === 'none') {
-        fullDesc.style.display = 'inline';
-        shortDesc.style.display = 'none';
-        toggleBtn.textContent = 'Read Less';
-    } else {
-        fullDesc.style.display = 'none';
-        shortDesc.style.display = 'inline';
-        toggleBtn.textContent = 'Read More';
-    }
-}
-</script>

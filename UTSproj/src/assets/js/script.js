@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', function () {
     var deleteModal = document.getElementById('deleteModal');
     var deleteEventIdInput = document.getElementById('deleteEventId');
@@ -12,6 +11,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     confirmDeleteButton.addEventListener('click', function () {
         var eventId = deleteEventIdInput.value;
-        window.location.href = "hapus.php?id_events=" + eventId;
+        window.location.href = "delete-process.php?id_events=" + eventId;
     });
 });

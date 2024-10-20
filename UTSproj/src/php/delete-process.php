@@ -8,8 +8,7 @@ if (isset($_GET['id_events']) && is_numeric($_GET['id_events'])) {
 
     $sql = "DELETE FROM events WHERE id_events = $id";
     if ($conn->query($sql) === TRUE) {
-        echo "Event deleted successfully";
-        header("Location: index.php");
+        header("Location: deleteEvent.php");
         exit(); 
     } else {
         echo "Error deleting record: " . $conn->error;

@@ -60,7 +60,26 @@
   <script src="../assets/libs/apexcharts/dist/apexcharts.min.js"></script>
   <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
   <script src="../assets/js/sidebarmenu.js"></script>
-  <script src="../assets/js/script.js"></script>
+  <script src="../assets/js/read.js"></script>
+  <script src="../assets/js/script.js">
+    document.addEventListener('DOMContentLoaded', function () {
+    var deleteModal = document.getElementById('deleteModal');
+    var deleteEventIdInput = document.getElementById('deleteEventId');
+    var confirmDeleteButton = document.getElementById('confirmDelete');
+
+    deleteModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget;
+        var eventId = button.getAttribute('data-id');
+        deleteEventIdInput.value = eventId;
+    });
+
+    confirmDeleteButton.addEventListener('click', function () {
+        var eventId = deleteEventIdInput.value;
+        window.location.href = "delete-process.php?id_events=" + eventId;
+    });
+});
+
+  </script>
   <script src="../assets/js/app.min.js"></script>
   <script src="../assets/js/dashboard.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>

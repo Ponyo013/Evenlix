@@ -12,7 +12,7 @@ if ($result->num_rows > 0) {
         echo "<img src='" . $row['photo'] . "' class='card-img-top' alt='" . $row['event_name'] . "' style='height: 350px; object-fit: cover;'>";
 
         echo "<div class='position-absolute top-0 start-0 bg-dark rounded-bottom text-white p-1' style='font-weight: bold; font-size: 1rem;'>";
-        echo "" . ucfirst($row['status']);  // Capitalize first letter
+        echo "" . ucfirst($row['status']);  
         echo "</div>";
 
         echo "</div>";
@@ -69,7 +69,14 @@ if ($result->num_rows > 0) {
         echo "</div>";
         
         echo "<div class='d-flex justify-content-center align-items-center'>";
-        echo "<button class='btn btn-warning btn-sm rounded-3' data-bs-toggle='modal' data-bs-target='#editEventModal' data-id='" . $row['id_events'] . "'>";
+        echo "<button class='btn btn-warning btn-sm rounded-3' data-bs-toggle='modal' data-bs-target='#editEventModal' 
+                data-id='" . $row['id_events'] . "'
+                data-name='" . htmlspecialchars($row['event_name'], ENT_QUOTES) . "'
+                data-datetime='" . $row['date_time'] . "'
+                data-capacity='" . $row['max_capacity'] . "'
+                data-location='" . htmlspecialchars($row['location'], ENT_QUOTES) . "'
+                data-description='" . htmlspecialchars($row['description'], ENT_QUOTES) . "'
+                data-status='" . $row['status'] . "'>";
         echo "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='icon icon-tabler icon-tabler-file-pencil'>";
         echo "<path stroke='none' d='M0 0h24v24H0z' fill='none'/>";
         echo "<path d='M14 3v4a1 1 0 0 0 1 1h4' />";
@@ -77,6 +84,7 @@ if ($result->num_rows > 0) {
         echo "<path d='M10 18l5 -5a1.414 1.414 0 0 0 -2 -2l-5 5v2h2z' />";
         echo "</svg>";
         echo "</button>";
+    
         echo "</div>";
         
         echo "</div>"; 
@@ -93,71 +101,51 @@ if ($result->num_rows > 0) {
 $conn->close();
 ?>
 
-<div class="modal fade" id="editEventModal" tabindex="-1" aria-labelledby="editEventModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editEventModalLabel">Edit Event</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form id="editEventForm" method="POST" enctype="multipart/form-data">
-          <input type="hidden" name="event_id" id="event_id">
-          <div class="form-group mb-3">
-            <label for="event-name">Event Name</label>
-            <input type="text" name="event-name" id="event-name" class="form-control" required>
-          </div>
-          <div class="form-group mb-3">
-            <label for="DnT">Date and Time</label>
-            <input type="datetime-local" name="DnT" id="DnT" class="form-control" required>
-          </div>
-          <div class="form-group mb-3">
-            <label for="slot">Max Capacity</label>
-            <input type="number" name="slot" id="slot" class="form-control" required>
-          </div>
-          <div class="form-group mb-3">
-            <label for="lokasi">Location</label>
-            <input type="text" name="lokasi" id="lokasi" class="form-control" required>
-          </div>
-          <div class="form-group mb-3">
-            <label for="deskripsi">Description</label>
-            <textarea name="deskripsi" id="deskripsi" class="form-control" required></textarea>
-          </div>
-          <div class="form-group mb-3">
-            <label for="Foto">Event Image</label>
-            <input type="file" name="Foto" id="Foto" class="form-control">
-            <img id="event-image-preview" style="max-width:100px; margin-top:10px;" />
-          </div>
-          <div class="form-group mb-3">
-            <label for="status">Event Status</label>
-            <select name="status" id="status" class="form-control" required>
-            <option value="open">Open</option>
-            <option value="closed">Closed</option>
-            <option value="canceled">Canceled</option>
-            </select>
-          </div>
-          <button type="submit" class="btn btn-primary">Update Event</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-
+<!-- Pre Populate The Data -->
 <script>
-function toggleDescription(id) {
-    const shortDesc = document.getElementById('short-desc-' + id);
-    const fullDesc = document.getElementById('full-desc-' + id);
-    const toggleBtn = document.getElementById('toggle-btn-' + id);
+   document.addEventListener('DOMContentLoaded', function () {
+    const editEventModal = document.getElementById('editEventModal');
+    editEventModal.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget;
+        const id = button.getAttribute('data-id');
+        const name = button.getAttribute('data-name');
+        const datetime = button.getAttribute('data-datetime');
+        const capacity = button.getAttribute('data-capacity');
+        const location = button.getAttribute('data-location');
+        const description = button.getAttribute('data-description');
+        const status = button.getAttribute('data-status');
+      
 
-    if (fullDesc.style.display === 'none') {
-        fullDesc.style.display = 'inline';
-        shortDesc.style.display = 'none';
-        toggleBtn.textContent = 'Read Less';
-    } else {
-        fullDesc.style.display = 'none';
-        shortDesc.style.display = 'inline';
-        toggleBtn.textContent = 'Read More';
-    }
-}
+ 
+        document.getElementById('event_id').value = id;
+        document.getElementById('event-name').value = name;
+        document.getElementById('DnT').value = datetime;
+        document.getElementById('slot').value = capacity;
+        document.getElementById('lokasi').value = location;
+        document.getElementById('deskripsi').value = description;
+        document.getElementById('status').value = status;
+
+        }); 
+    });
+
+    document.getElementById('editEventForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    const formData = new FormData(this);
+
+    fetch('update_event.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(data => {
+        alert(data); 
+        location.reload(); 
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('There was an error updating the event.');
+    });
+});
+
 </script>

@@ -12,7 +12,7 @@ if ($result->num_rows > 0) {
         echo "<img src='" . $row['photo'] . "' class='card-img-top' alt='" . $row['event_name'] . "' style='height: 350px; object-fit: cover;'>";
 
         echo "<div class='position-absolute top-0 start-0 bg-dark rounded-bottom text-white p-1' style='font-weight: bold; font-size: 1rem;'>";
-        echo "" . ucfirst($row['status']);  // Capitalize first letter
+        echo "" . ucfirst($row['status']);  
         echo "</div>";
 
         echo "</div>";
@@ -91,22 +91,3 @@ if ($result->num_rows > 0) {
 
 $conn->close();
 ?>
-
-<script>
-function toggleDescription(id) {
-    const shortDesc = document.getElementById('short-desc-' + id);
-    const fullDesc = document.getElementById('full-desc-' + id);
-    const toggleBtn = document.getElementById('toggle-btn-' + id);
-
-    if (fullDesc.style.display === 'none') {
-        fullDesc.style.display = 'inline';
-        shortDesc.style.display = 'none';
-        toggleBtn.textContent = 'Read Less';
-    } else {
-        fullDesc.style.display = 'none';
-        shortDesc.style.display = 'inline';
-        toggleBtn.textContent = 'Read More';
-    }
-}
-</script>
-
