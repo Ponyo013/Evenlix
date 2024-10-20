@@ -7,6 +7,24 @@
     <title>Evenlix - Profile</title>
     <link rel="shortcut icon" type="image/png" href="../assets/images/logos/logo.png" />
     <link rel="stylesheet" href="../assets/css/styles.min.css" />
+    <style>
+        .profile-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .profile-image-input {
+            display: none;
+        }
+
+        .profile-image-label {
+            cursor: pointer;
+            display: inline-block;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 
 <body>
@@ -28,20 +46,37 @@
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title">Profile Information</h4>
-                                <form>
+
+                                <!-- Profile Image Section -->
+                                <div class="text-center mb-4">
+                                    <img src="../assets/images/default-profile.png" alt="Profile Image" class="profile-image" id="profileImagePreview">
+                                    <label for="profileImage" class="profile-image-label btn btn-outline-primary">Change Profile Image</label>
+                                    <input type="file" class="profile-image-input" id="profileImage" accept="image/*">
+                                </div>
+
+                                <!-- Display Mode -->
+                                <div id="profileDisplay">
+                                    <p><strong>Name: </strong><span id="displayName">John Doe</span></p>
+                                    <p><strong>Email: </strong><span id="displayEmail">john@example.com</span></p>
+                                    <button class="btn btn-primary" id="editProfileBtn">Edit Profile</button>
+                                </div>
+
+                                <!-- Edit Mode (Initially Hidden) -->
+                                <form id="editProfileForm" style="display:none;">
                                     <div class="mb-3">
                                         <label for="name" class="form-label">Name</label>
-                                        <input type="text" class="form-control" id="name" placeholder="John Doe">
+                                        <input type="text" class="form-control" id="name" placeholder="John Doe" value="John Doe">
                                     </div>
                                     <div class="mb-3">
                                         <label for="email" class="form-label">Email</label>
-                                        <input type="email" class="form-control" id="email" placeholder="john@example.com">
+                                        <input type="email" class="form-control" id="email" placeholder="john@example.com" value="john@example.com">
                                     </div>
                                     <div class="mb-3">
                                         <label for="password" class="form-label">Password</label>
                                         <input type="password" class="form-control" id="password" placeholder="********">
                                     </div>
-                                    <button type="submit" class="btn btn-primary">Update Profile</button>
+                                    <button type="submit" class="btn btn-success">Save Changes</button>
+                                    <button type="button" class="btn btn-secondary" id="cancelEditBtn">Cancel</button>
                                 </form>
                             </div>
                         </div>
@@ -78,6 +113,30 @@
         <script src="../assets/js/app.min.js"></script>
         <script src="../assets/js/dashboard.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
+
+        <!-- Script to toggle between display and edit modes -->
+        <script>
+            document.getElementById('editProfileBtn').addEventListener('click', function() {
+                document.getElementById('profileDisplay').style.display = 'none';
+                document.getElementById('editProfileForm').style.display = 'block';
+            });
+
+            document.getElementById('cancelEditBtn').addEventListener('click', function() {
+                document.getElementById('profileDisplay').style.display = 'block';
+                document.getElementById('editProfileForm').style.display = 'none';
+            });
+
+            document.getElementById('profileImage').addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        document.getElementById('profileImagePreview').src = e.target.result;
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+        </script>
 </body>
 
 </html>
