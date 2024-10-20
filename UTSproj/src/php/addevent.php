@@ -7,15 +7,13 @@
   <title>Evenlix - Add Event</title>
   <link rel="shortcut icon" type="image/png" href="../assets/images/logos/logo.png" />
   <link rel="stylesheet" href="../assets/css/styles.min.css" />
-
-
 </head>
 
 <body>
   <!-- Body Wrapper -->
   <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
     data-sidebar-position="fixed" data-header-position="fixed">
-    
+
     <!-- Sidebar -->
     <?php include 'sidebar.php'; ?>
 
@@ -27,7 +25,7 @@
 
       <!-- Main Content -->
       <div class="container-fluid">
-        
+
         <!-- Add Event Form Section -->
         <div class="row justify-content-center">
           <div class="container mt-5">
@@ -57,31 +55,39 @@
               <!-- Location -->
               <div class="form-group mb-3">
                 <label for="lokasi">Location</label>
-                <input type="text" name="lokasi" class="form-control" placeholder="Enter Event Location" required>
+                <input type="text" name="lokasi" class="form-control" placeholder="Enter Location" required>
               </div>
 
               <!-- Description -->
               <div class="form-group mb-3">
                 <label for="deskripsi">Description</label>
-                <textarea name="deskripsi" class="form-control" rows="4" placeholder="Enter Event Description" required></textarea>
+                <textarea name="deskripsi" class="form-control" placeholder="Enter Event Description" required></textarea>
               </div>
 
-              <!-- Upload Photo -->
-              <div class="form-group mb-4">
-                <label for="Foto">Upload Event Photo</label>
-                <input type="file" name="Foto" class="form-control-file" required>
+              <!-- Event Photo -->
+              <div class="form-group mb-3">
+                <label for="Foto">Event Photo</label>
+                <input type="file" name="Foto" class="form-control" required>
+              </div>
+
+              <!-- Event Status -->
+              <div class="form-group mb-3">
+                <label for="status">Event Status</label>
+                <select name="status" class="form-control" required>
+                  <option value="open">Open</option>
+                  <option value="closed">Closed</option>
+                  <option value="canceled">Canceled</option>
+                </select>
               </div>
 
               <!-- Submit Button -->
-              <button type="submit" class="btn btn-primary w-100">Add Event</button>
+              <button type="submit" class="btn btn-primary">Add Event</button>
+
             </form>
+
           </div>
         </div>
 
-        <!-- Footer -->
-        <div class="py-6 px-6 text-center">
-          <p class="mb-0 fs-4">Designed and Developed by Team Jokowi</p>
-        </div>
       </div>
     </div>
   </div>

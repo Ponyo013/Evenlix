@@ -11,6 +11,10 @@ if ($result->num_rows > 0) {
         echo "<div class='position-relative'>";
         echo "<img src='" . $row['photo'] . "' class='card-img-top' alt='" . $row['event_name'] . "' style='height: 350px; object-fit: cover;'>";
 
+        echo "<div class='position-absolute top-0 start-0 bg-dark rounded-bottom text-white p-1' style='font-weight: bold; font-size: 1rem;'>";
+        echo "" . ucfirst($row['status']);  // Capitalize first letter
+        echo "</div>";
+
         echo "</div>";
         echo "<div class='card-body p-4'>";
         echo "<div class='d-flex align-items-center gap-4'>";
