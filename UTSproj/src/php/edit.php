@@ -1,7 +1,7 @@
 <?php
 require "connect.php";
 
-$sql = "SELECT * FROM events ";
+$sql = "SELECT * FROM events";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
@@ -10,6 +10,7 @@ if ($result->num_rows > 0) {
         echo "<div class='card overflow-hidden hover-img'>";
         echo "<div class='position-relative'>";
         echo "<img src='" . $row['photo'] . "' class='card-img-top' alt='" . $row['event_name'] . "' style='height: 350px; object-fit: cover;'>";
+
         echo "</div>";
         echo "<div class='card-body p-4'>";
 
@@ -33,24 +34,17 @@ if ($result->num_rows > 0) {
         echo "</div>";
         echo "</div>"; 
 
-        $description = $row['description'];
-        $word_limit = 30;
-        $description_words = explode(" ", $description);
-
-        if (count($description_words) > $word_limit) {
-            $short_description = implode(" ", array_slice($description_words, 0, $word_limit)) . "...";
-            $full_description = $description;
-        } else {
-            $short_description = $description;
-            $full_description = '';
-        }
-
-        echo "<p class='d-block my-4 fs-5 text-dark fw-semibold' id='short-description-" . $row['id_events'] . "'>";
-        echo $short_description;
-        if ($full_description) {
-            echo "<br>";
-            echo "<a href='javascript:void(0)' class='read-more-btn' id='read-more-btn-" . $row['id_events'] . "' onclick='toggleText(" . $row['id_events'] . ")'>Read more</a>";
-        }
+        echo "<p>";
+        echo "<span class='short-desc' id='short-desc-" . $row['id_events'] . "'>";
+        echo substr($row['description'], 0, 100); 
+        echo (strlen($row['description']) > 100) ? "..." : "";
+        echo "</span>";
+        echo "<span class='full-desc' id='full-desc-" . $row['id_events'] . "' style='display: none;'>";
+        echo $row['description'];
+        echo "</span>";
+        echo "<button class='btn text-primary p-0' onclick='toggleDescription(" . $row['id_events'] . ")' id='toggle-btn-" . $row['id_events'] . "'>";
+        echo (strlen($row['description']) > 100) ? "Read More" : "";
+        echo "</button>";
         echo "</p>";
 
         echo "<div class='d-flex align-items-center gap-4'>";
@@ -71,14 +65,14 @@ if ($result->num_rows > 0) {
         echo "</div>";
         
         echo "<div class='d-flex justify-content-center align-items-center'>";
-        echo "<button class='btn btn-warning btn-sm rounded-3' data-bs-toggle='modal' data-bs-target='#editEventModal' data-id='" . $row['id_events'] . "'>";
+        echo "<a href='#.php?id=" . $row['id_events'] . "' class='btn btn-warning btn-sm rounded-3'>";
         echo "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='icon icon-tabler icon-tabler-file-pencil'>";
         echo "<path stroke='none' d='M0 0h24v24H0z' fill='none'/>";
         echo "<path d='M14 3v4a1 1 0 0 0 1 1h4' />";
         echo "<path d='M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z' />";
         echo "<path d='M10 18l5 -5a1.414 1.414 0 0 0 -2 -2l-5 5v2h2z' />";
         echo "</svg>";
-        echo "</button>";
+        echo "</a>";
         echo "</div>";
         
         echo "</div>"; 
@@ -95,46 +89,20 @@ if ($result->num_rows > 0) {
 $conn->close();
 ?>
 
-<!-- Bootstrap Modal for Editing Event -->
-<div class="modal fade" id="editEventModal" tabindex="-1" aria-labelledby="editEventModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editEventModalLabel">Edit Event</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form id="editEventForm" method="POST" enctype="multipart/form-data">
-          <input type="hidden" name="event_id" id="event_id">
-          <div class="form-group mb-3">
-            <label for="event-name">Event Name</label>
-            <input type="text" name="event-name" id="event-name" class="form-control" required>
-          </div>
-          <div class="form-group mb-3">
-            <label for="DnT">Date and Time</label>
-            <input type="datetime-local" name="DnT" id="DnT" class="form-control" required>
-          </div>
-          <div class="form-group mb-3">
-            <label for="slot">Max Capacity</label>
-            <input type="number" name="slot" id="slot" class="form-control" required>
-          </div>
-          <div class="form-group mb-3">
-            <label for="lokasi">Location</label>
-            <input type="text" name="lokasi" id="lokasi" class="form-control" required>
-          </div>
-          <div class="form-group mb-3">
-            <label for="deskripsi">Description</label>
-            <textarea name="deskripsi" id="deskripsi" class="form-control" required></textarea>
-          </div>
-          <div class="form-group mb-3">
-            <label for="Foto">Event Image</label>
-            <input type="file" name="Foto" id="Foto" class="form-control">
-            <img id="event-image-preview" style="max-width:100px; margin-top:10px;" />
-          </div>
-          <button type="submit" class="btn btn-primary">Update Event</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
+<script>
+function toggleDescription(id) {
+    const shortDesc = document.getElementById('short-desc-' + id);
+    const fullDesc = document.getElementById('full-desc-' + id);
+    const toggleBtn = document.getElementById('toggle-btn-' + id);
 
+    if (fullDesc.style.display === 'none') {
+        fullDesc.style.display = 'inline';
+        shortDesc.style.display = 'none';
+        toggleBtn.textContent = 'Read Less';
+    } else {
+        fullDesc.style.display = 'none';
+        shortDesc.style.display = 'inline';
+        toggleBtn.textContent = 'Read More';
+    }
+}
+</script>

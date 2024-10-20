@@ -33,24 +33,17 @@ if ($result->num_rows > 0) {
         echo "</div>";
         echo "</div>"; 
 
-        $description = $row['description'];
-        $word_limit = 30;
-        $description_words = explode(" ", $description);
-
-        if (count($description_words) > $word_limit) {
-            $short_description = implode(" ", array_slice($description_words, 0, $word_limit)) . "...";
-            $full_description = $description;
-        } else {
-            $short_description = $description;
-            $full_description = '';
-        }
-
-        echo "<p class='d-block my-4 fs-5 text-dark fw-semibold' id='short-description-" . $row['id_events'] . "'>";
-        echo $short_description;
-        if ($full_description) {
-            echo "<br>";
-            echo "<a href='javascript:void(0)' class='read-more-btn' id='read-more-btn-" . $row['id_events'] . "' onclick='toggleText(" . $row['id_events'] . ")'>Read more</a>";
-        }
+        echo "<p>";
+        echo "<span class='short-desc' id='short-desc-" . $row['id_events'] . "'>";
+        echo substr($row['description'], 0, 100); 
+        echo (strlen($row['description']) > 100) ? "..." : "";
+        echo "</span>";
+        echo "<span class='full-desc' id='full-desc-" . $row['id_events'] . "' style='display: none;'>";
+        echo $row['description'];
+        echo "</span>";
+        echo "<button class='btn text-primary p-0' onclick='toggleDescription(" . $row['id_events'] . ")' id='toggle-btn-" . $row['id_events'] . "'>";
+        echo (strlen($row['description']) > 100) ? "Read More" : "";
+        echo "</button>";
         echo "</p>";
 
         echo "<div class='d-flex align-items-center gap-4'>";
@@ -96,16 +89,20 @@ $conn->close();
 ?>
 
 <script>
-function toggleText(id_events) {
-    var shortDescription = document.getElementById('short-description-' + id_events);
-    var fullDescription = document.getElementById('full-description-' + id_events);
-    
-    if (fullDescription.style.display === 'none') {
-        fullDescription.style.display = 'block';
-        shortDescription.style.display = 'none';
+function toggleDescription(id) {
+    const shortDesc = document.getElementById('short-desc-' + id);
+    const fullDesc = document.getElementById('full-desc-' + id);
+    const toggleBtn = document.getElementById('toggle-btn-' + id);
+
+    if (fullDesc.style.display === 'none') {
+        fullDesc.style.display = 'inline';
+        shortDesc.style.display = 'none';
+        toggleBtn.textContent = 'Read Less';
     } else {
-        fullDescription.style.display = 'none';
-        shortDescription.style.display = 'block';
+        fullDesc.style.display = 'none';
+        shortDesc.style.display = 'inline';
+        toggleBtn.textContent = 'Read More';
     }
 }
 </script>
+
