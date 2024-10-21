@@ -12,8 +12,9 @@ if (!isset($conn)) {
 
 $sql = "SELECT u.user_id, u.username, u.email, 
                IFNULL(GROUP_CONCAT(e.event_name SEPARATOR ', '), 'No events registered') AS event_names
-        FROM users u 
-        LEFT JOIN events e ON u.id_events = e.id_events 
+        FROM users u
+        LEFT JOIN registrations r ON u.user_id = r.user_id
+        LEFT JOIN events e ON r.event_id = e.id_events
         WHERE u.role = 'user'
         GROUP BY u.user_id, u.username, u.email";
 

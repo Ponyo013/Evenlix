@@ -2,13 +2,11 @@
 require "connect.php";
 
 if (session_status() === PHP_SESSION_NONE) {
-    session_start(); // Start session if it's not already started
+    session_start(); 
 }
-// Assuming you have a session for the user
-$user_id = $_SESSION['user_id']; // Replace with your session management
 
+$user_id = $_SESSION['user_id'];
 
-// Fetch only registered events for the current user
 $sql = "SELECT e.*, r.registration_id 
         FROM events e 
         JOIN registrations r ON e.id_events = r.event_id 
@@ -100,9 +98,9 @@ if ($result->num_rows > 0) {
         echo "</div>"; 
 
         if (strtolower($row['status']) != 'canceled') {
-            echo "<button class='btn btn-danger mt-3 rounded-2 text-white text-center p-1 w-25' style='font-weight: bold; font-size: 1rem;' onclick='setEventId(" . $row['registration_id'] . ")'>Cancel</button>";
+            echo "<button class='btn btn-danger mt-3 rounded-2 text-white text-center p-1 w-25' style='font-weight: bold; font-size: 1rem;' onclick='setEventId(" . $row['registration_id'] . ")' data-bs-toggle='modal' data-bs-target='#cancelModal'>Cancel</button>";
         }
-
+        
         echo "</div></div></div>";
         echo "</div>"; 
         echo "</div>"; 
