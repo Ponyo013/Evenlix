@@ -61,3 +61,10 @@ function previewImage(event) {
         reader.readAsDataURL(input.files[0]);
     }
 }
+
+function exportTableToExcel(tableID, filename = 'export.xlsx') {
+    var wb = XLSX.utils.book_new(); 
+    var ws = XLSX.utils.table_to_sheet(document.getElementById(tableID)); 
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1'); 
+    XLSX.writeFile(wb, filename);
+}
