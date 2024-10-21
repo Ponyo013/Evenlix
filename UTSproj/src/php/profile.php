@@ -30,19 +30,48 @@
                                 <h4 class="card-title">Profile Information</h4>
 
                                 <?php require 'pre-profile.php' ?>
-                                
+                               
                                 <form id="editProfileForm" method="POST" action="profile-update.php" enctype="multipart/form-data">
+                                    <?php if (isset($_SESSION['success_message'])): ?>
+                                        <div class="alert alert-success text-center" role="alert">
+                                            <?php 
+                                                echo $_SESSION['success_message'];
+                                                unset($_SESSION['success_message']);
+                                            ?>
+                                        </div>
+                                    <?php endif; ?>
+
+                                    <?php if (isset($_SESSION['error_message'])): ?>
+                                        <div class="alert alert-danger text-center" role="alert">
+                                            <?php 
+                                                echo $_SESSION['error_message'];
+                                                unset($_SESSION['error_message']);
+                                            ?>
+                                        </div>
+                                    <?php endif; ?>
+
+                                    <?php if (isset($_SESSION['success_message'])): ?>
+                                        <div class="alert alert-success text-center" role="alert">
+                                            <?php 
+                                                echo $_SESSION['success_message'];
+                                                unset($_SESSION['success_message']);
+                                            ?>
+                                        </div>
+                                    <?php endif; ?>
+                                    
+                                
                                     <div class="mt-3">
                                         <img src="../assets/images/profile/<?php echo htmlspecialchars($user['foto'] ?? 'default.jpg'); ?>" 
-                                            alt="Profile Picture" 
-                                            id="profileImage" 
-                                            class="mt-3 img-fluid rounded-circle mb-3"
-                                            style="width: 90px; height: 90px; object-fit: cover; cursor: pointer;" 
-                                            onclick="document.getElementById('fileInput').click();">
+                                        alt="Profile Picture" 
+                                        id="profileImage" 
+                                        class="mt-3 img-fluid rounded-circle mb-3"
+                                        style="width: 90px; height: 90px; object-fit: cover; cursor: pointer;" 
+                                        onclick="document.getElementById('fileInput').click();">
                                         <input type="file" id="fileInput" name="profileImage"  style="display: none;" accept="image/*" onchange="previewImage(event)">
                                         <img id="profileImagePreview" class="mt-3 img-fluid rounded-circle mb-3" style="display: none; width: 90px; height: 90px; object-fit: cover;">
                                     </div>
-
+                                    
+                                
                                     <div>
                                         <div class="mb-3">
                                             <label for="name" class="form-label">Nama</label>
@@ -58,7 +87,10 @@
                                     </div>
                                 </form>
                                    
-                                <button type="submit" class="btn btn-primary">Change Password</button>
+                            
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                                    Change Password
+                                </button>
                             </div>
                         </div>
 
@@ -71,6 +103,36 @@
                                             Event 1 - <span class="badge bg-success">Registered</span> <span class="float-end">10th Oct 2024</span>
                                         </li>
                                     </ul>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Change Password Modal -->
+                        <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="changePasswordModalLabel">Change Password</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="changePasswordForm" method="POST" action="profile-pass.php">
+                                            <div class="mb-3">
+                                                <label for="currentPassword" class="form-label">Current Password</label>
+                                                <input type="password" class="form-control" id="currentPassword" name="current_password" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="newPassword" class="form-label">New Password</label>
+                                                <input type="password" class="form-control" id="newPassword" name="new_password" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="confirmPassword" class="form-label">Confirm Password</label>
+                                                <input type="password" class="form-control" id="confirmPassword" name="confirm_password" required>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Update Password</button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
