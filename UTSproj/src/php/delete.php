@@ -10,11 +10,6 @@ if ($result->num_rows > 0) {
         echo "<div class='card overflow-hidden hover-img'>";
         echo "<div class='position-relative'>";
         echo "<img src='" . $row['photo'] . "' class='card-img-top' alt='" . $row['event_name'] . "' style='height: 350px; object-fit: cover;'>";
-
-        echo "<div class='position-absolute top-0 start-0 bg-dark rounded-bottom text-white p-1' style='font-weight: bold; font-size: 1rem;'>";
-        echo "" . ucfirst($row['status']);  
-        echo "</div>";
-
         echo "</div>";
         echo "<div class='card-body p-4'>";
         echo "<div class='d-flex align-items-center gap-4'>";
@@ -78,6 +73,26 @@ if ($result->num_rows > 0) {
         echo "<path d='M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3' />";
         echo "</svg></a>";
         echo "</div>";
+        echo "</div>";
+        $status = ucfirst($row['status']);
+        $bgColor = '';
+        
+        switch (strtolower($row['status'])) {
+            case 'open':
+                $bgColor = 'bg-success';
+                break;
+            case 'closed':
+                $bgColor = 'bg-dark'; 
+                break;
+            case 'canceled':
+                $bgColor = 'bg-danger'; 
+                break;
+            default:
+                $bgColor = 'bg-secondary';
+        }
+        
+        echo "<div class='$bgColor mt-3 rounded-2 text-white text-center p-1 w-25' style='font-weight: bold; font-size: 1rem;'>";
+        echo $status;
         echo "</div>"; 
         echo "</div>"; 
         echo "</div>"; 
