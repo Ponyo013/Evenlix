@@ -1,5 +1,6 @@
 <?php
 require 'connect.php';
+session_start(); // Start the session
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = htmlspecialchars($_POST['name'], ENT_QUOTES, 'UTF-8');
@@ -16,21 +17,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
-            echo "Email already exists!";
+            $_SESSION['error'] = 'Email already exists!';
+            header('Location: signup.php');
+            exit;
         } else {
             $stmt = $conn->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
             $stmt->bind_param("sss", $name, $email, $hashedPassword);
 
             if ($stmt->execute()) {
-                echo "Signup successful! You can now <a href='login.php'>login</a>";
+                $_SESSION['success'] = 'Signup successful! You can now login.';
+                header('Location: signup.php');
+                exit;
             } else {
-                echo "Error: " . $stmt->error;
+                $_SESSION['error'] = 'Error: ' . $stmt->error;
+                header('Location: signup.php');
+                exit;
             }
         }
 
         $stmt->close();
     } else {
-        echo "Passwords do not match!";
+        $_SESSION['error'] = 'Passwords do not match!';
+        header('Location: signup.php');
+        exit;
     }
 
     $conn->close();

@@ -13,6 +13,15 @@
                 <form action="login-user.php" method="POST" autocomplete="">
                     <h2 class="text-center">Login Form</h2>
                     <p class="text-center">Login with your email and password.</p>
+                    <?php
+                    session_start();
+
+                    if (isset($_SESSION['error'])) {
+                        echo '<div class="alert alert-danger text-center">' . $_SESSION['error'] . '</div>';
+                        unset($_SESSION['error']);
+                    }
+                    ?>
+
                     <div class="form-group">
                         <input class="form-control" type="email" name="email" placeholder="Email Address" required value="">
                     </div>

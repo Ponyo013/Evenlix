@@ -15,20 +15,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $user = $result->fetch_assoc();
 
         if (password_verify($password, $user['password'])) {
-         
             $_SESSION['user_id'] = $user['user_id'];
             $_SESSION['username'] = $user['username'];
             $_SESSION['role'] = $user['role'];
 
             header('Location: index.php');
+            exit;
         } else {
-            echo "Invalid email or password!";
+            $_SESSION['error'] = 'Invalid email or password!';
+            header('Location: login.php');
+            exit;
         }
     } else {
-        echo "Invalid email or password!";
+        $_SESSION['error'] = 'Invalid email or password!';
+        header('Location: login.php');
+        exit;
     }
 
-    // Close the statement and the connection
     $stmt->close();
     $conn->close();
 }

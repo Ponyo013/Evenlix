@@ -13,6 +13,21 @@
                 <form action="signup-user.php" method="POST" autocomplete="">
                     <h2 class="text-center">Signup Form</h2>
                     <p class="text-center">It's quick and easy.</p>
+
+                    <?php
+                    session_start();
+
+                    if (isset($_SESSION['success'])) {
+                        echo '<div class="alert alert-success text-centerr">' . $_SESSION['success'] . '</div>';
+                        unset($_SESSION['success']); 
+                    }
+
+                    if (isset($_SESSION['error'])) {
+                        echo '<div class="alert alert-danger text-center">' . $_SESSION['error'] . '</div>';
+                        unset($_SESSION['error']);
+                    }
+                    ?>
+
                     <div class="form-group">
                         <input class="form-control" type="text" name="name" placeholder="Full Name" required value="">
                     </div>
