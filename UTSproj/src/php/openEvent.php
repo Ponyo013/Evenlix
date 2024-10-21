@@ -1,8 +1,33 @@
 <?php
 require "connect.php";
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start(); // Start session if not already started
+}
+
+// Assuming you store user_id in the session after login
+$user_id = $_SESSION['user_id']; // Adjust this according to your session setup
+
+// Fetch the user's email from the database
+$sql_user = "SELECT email FROM users WHERE user_id = ?";
+$stmt_user = $conn->prepare($sql_user);
+$stmt_user->bind_param("i", $user_id);
+$stmt_user->execute();
+$result_user = $stmt_user->get_result();
+
+if ($result_user->num_rows > 0) {
+    $user = $result_user->fetch_assoc();
+    $user_email = $user['email']; // Get the user's email
+} else {
+    $user_email = ''; // Fallback in case no email is found
+}
+
+$stmt_user->close();
+
+// Now fetching the events
 $sql = "SELECT * FROM events WHERE status = 'open'";
 $result = $conn->query($sql);
+
 
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
@@ -10,10 +35,6 @@ if ($result->num_rows > 0) {
         echo "<div class='card overflow-hidden hover-img'>";
         echo "<div class='position-relative'>";
         echo "<img src='" . $row['photo'] . "' class='card-img-top' alt='" . $row['event_name'] . "' style='height: 350px; object-fit: cover;'>";
-
-        echo "<div class='position-absolute top-0 start-0 bg-dark rounded-bottom text-white p-1' style='font-weight: bold; font-size: 1rem;'>";
-        echo "" . ucfirst($row['status']); 
-        echo "</div>";
 
         echo "</div>";
         echo "<div class='card-body p-4'>";
@@ -66,8 +87,36 @@ if ($result->num_rows > 0) {
         echo "<path d='M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2' />";
         echo "</svg>" . $row['max_capacity'];
         echo "</div>";
-     
+        
+        echo "</div>";
+        $status = ucfirst($row['status']);
+        $bgColor = '';
+        
+        switch (strtolower($row['status'])) {
+            case 'open':
+                $bgColor = 'bg-success';
+                break;
+            case 'closed':
+                $bgColor = 'bg-dark'; 
+                break;
+            case 'canceled':
+                $bgColor = 'bg-danger'; 
+                break;
+            default:
+                $bgColor = 'bg-secondary';
+        }
+
+        echo "<div class='d-flex justify-content-between align-items-center mt-3'>";
+
+        echo "<div class='$bgColor mt-3 rounded-2 text-white text-center p-1 w-25' style='font-weight: bold; font-size: 1rem;'>";
+        echo $status;  
         echo "</div>"; 
+
+        echo "<button class='btn btn-dark mt-3 rounded-2 text-white text-center p-1 w-25' style='font-weight: bold; font-size: 1rem;' data-bs-toggle='modal' data-bs-target='#registerEventModal' onclick='setEventId(" . $row['id_events'] . ")'>Register</button>";
+        echo "</div></div></div>";
+
+        echo "</div>"; 
+
         echo "</div>"; 
         echo "</div>"; 
 
@@ -80,3 +129,40 @@ if ($result->num_rows > 0) {
 
 $conn->close();
 ?>
+
+<div class="modal fade" id="registerEventModal" tabindex="-1" aria-labelledby="registerEventModalLabel" aria-hidden="true" action="register-process.php">
+    <input type="hidden" name="event_id" id="event_id"> 
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="registerEventModalLabel">Event Registration Form</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="registerEventForm" method="POST" action="register-process.php">
+                    <input type="hidden" name="event_id" id="event_id">
+                    <div class="form-group mb-3">
+                        <label for="full_name">Full Name</label>
+                        <input type="text" name="full_name" id="full_name" class="form-control" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="email">Email</label>
+                        <input type="email" name="email" id="email" class=" bg-secondary form-control" value="<?php echo $user_email; ?>" readonly>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="tickets">Number of Tickets</label>
+                        <input type="number" name="tickets" id="tickets" class="form-control" min="1" value="1" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function setEventId(id_events) {
+        document.getElementById('id_events').value = id_events;
+    }
+</script>

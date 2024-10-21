@@ -48,7 +48,7 @@
               <!-- Max Capacity -->
               <div class="form-group mb-3">
                 <label for="slot">Max Capacity</label>
-                <input type="number" name="slot" class="form-control" placeholder="Enter Maximum Capacity" required>
+                <input type="number" name="slot" class="form-control" placeholder="Enter Maximum Capacity" min="1" value="1" required>
               </div>
 
               <!-- Location -->

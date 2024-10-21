@@ -27,7 +27,7 @@
 
         <!-- Event -->
         <div class="row justify-content-center">
-          <?php include 'event.php'; ?>
+          <?php include 'myevent.php'; ?>
         </div>
 
         <div class="py-6 px-6 text-center">
@@ -44,6 +44,7 @@
     <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
     <script src="../assets/js/sidebarmenu.js"></script>
     <script src="../assets/js/app.min.js"></script>
+    <script src="../assets/js/dashboard.js"></script>
     <script src="../assets/js/read.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
   </div>

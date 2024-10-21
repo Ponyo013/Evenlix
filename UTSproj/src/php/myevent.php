@@ -1,27 +1,39 @@
 <?php
 require "connect.php";
 
-$sql = "SELECT * FROM events";
-$result = $conn->query($sql);
+if (session_status() === PHP_SESSION_NONE) {
+    session_start(); // Start session if it's not already started
+}
+// Assuming you have a session for the user
+$user_id = $_SESSION['user_id']; // Replace with your session management
+
+
+// Fetch only registered events for the current user
+$sql = "SELECT e.*, r.registration_id 
+        FROM events e 
+        JOIN registrations r ON e.id_events = r.event_id 
+        WHERE r.user_id = ?";
+
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
 
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         echo "<div class='col-lg-5 mb-5 mx-4'>";
         echo "<div class='card overflow-hidden hover-img'>";
         echo "<div class='position-relative'>";
-
         echo "<img src='" . $row['photo'] . "' class='card-img-top' alt='" . $row['event_name'] . "' style='height: 350px; object-fit: cover;'>";
         echo "</div>";
         echo "<div class='card-body p-4'>";
         echo "<div class='d-flex align-items-center gap-4'>";
-
         echo "<div class='d-flex align-items-center gap-2'>";
         echo "<h2 class='fw-bold' style='font-size: 1.5rem; text-transform: uppercase;'>" . $row['event_name'] . "</h2>";
         echo "</div>";
 
         $dateTime = new DateTime($row['date_time']);
         $formattedDateTime = $dateTime->format('Y-m-d / H:i'); 
-        
         echo "<div class='d-flex align-items-center fs-2 ms-auto'>";
         echo "<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='icon icon-tabler icons-tabler-outline icon-tabler-calendar-event'>";
         echo "<path stroke='none' d='M0 0h24v24H0z' fill='none'/>";
@@ -34,7 +46,6 @@ if ($result->num_rows > 0) {
         echo "</div>";
         echo "</div>"; 
 
-        
         echo "<p>";
         echo "<span class='short-desc' id='short-desc-" . $row['id_events'] . "'>";
         echo substr($row['description'], 0, 100); 
@@ -46,7 +57,7 @@ if ($result->num_rows > 0) {
         echo "<button class='btn text-primary p-0' onclick='toggleDescription(" . $row['id_events'] . ")' id='toggle-btn-" . $row['id_events'] . "'>";
         echo (strlen($row['description']) > 100) ? "Read More" : "";
         echo "</button>";
-        echo "</p>"; 
+        echo "</p>";
 
         echo "<div class='d-flex align-items-center gap-4'>";
         echo "<div class='d-flex align-items-center gap-2'>";
@@ -64,6 +75,7 @@ if ($result->num_rows > 0) {
         echo "<path d='M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2' />";
         echo "</svg>" . $row['max_capacity'];
         echo "</div>";
+        
         echo "</div>";
         $status = ucfirst($row['status']);
         $bgColor = '';
@@ -81,18 +93,18 @@ if ($result->num_rows > 0) {
             default:
                 $bgColor = 'bg-secondary';
         }
-        
-        echo "<div class='$bgColor mt-3 rounded-2 text-white text-center p-1 w-25' style='font-weight: bold; font-size: 1rem;'>";
-        echo $status;
-        echo "</div>";
 
+        echo "<div class='d-flex justify-content-between align-items-center mt-3'>";
+        echo "<div class='$bgColor mt-3 rounded-2 text-white text-center p-1 w-25' style='font-weight: bold; font-size: 1rem;'>";
+        echo $status;  
         echo "</div>"; 
+
+        if (strtolower($row['status']) != 'canceled') {
+            echo "<button class='btn btn-danger mt-3 rounded-2 text-white text-center p-1 w-25' style='font-weight: bold; font-size: 1rem;' onclick='setEventId(" . $row['registration_id'] . ")'>Cancel</button>";
+        }
+
+        echo "</div></div></div>";
         echo "</div>"; 
         echo "</div>"; 
     }
-} else {
-    echo "<p class='text-center'>No events found.</p>";
 }
-
-$conn->close();
-?>

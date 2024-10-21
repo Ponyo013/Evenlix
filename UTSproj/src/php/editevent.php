@@ -53,7 +53,7 @@
             </div>
             <div class="form-group mb-3">
               <label for="slot">Max Capacity</label>
-              <input type="number" name="slot" id="slot" class="form-control" required>
+              <input type="number" name="slot" id="slot" class="form-control" min="1" value="1" required>
             </div>
             <div class="form-group mb-3">
               <label for="lokasi">Location</label>
