@@ -46,7 +46,12 @@ if ($result->num_rows > 0) {
         echo '</tr>';
     }
 } else {
-    echo '<tr><td colspan="4" class="text-center">No users found.</td></tr>';
+    echo '<tr class="no-users-row">';
+    echo '<td class="hidden">No users found.</td>';
+    echo '<td class="hidden"></td>';
+    echo '<td class="hidden"></td>';
+    echo '<td class="hidden"></td>';
+    echo '</tr>';
 }
 
 $stmt->close();

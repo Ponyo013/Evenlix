@@ -49,7 +49,12 @@ if ($result->num_rows > 0) {
               </tr>";
     }
 } else {
-    echo "<tr><td colspan='4'>No events found</td></tr>";
+    echo '<tr class="no-users-row">';
+    echo '<td class="hidden">No Events found.</td>';
+    echo '<td class="hidden"></td>';
+    echo '<td class="hidden"></td>';
+    echo '<td class="hidden"></td>';
+    echo '</tr>';
 }
 
 $stmt->close();

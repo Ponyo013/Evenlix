@@ -93,7 +93,6 @@
                             </div>
                         </div>
 
-
                         <?php
                             $userId = $_SESSION['user_id'];
 
@@ -110,7 +109,6 @@
                             $result = $stmt->get_result();
 
                             ?>
-
 
                             <div class="col-lg-8 mt-4">
                                 <div class="card">
