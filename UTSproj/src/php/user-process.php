@@ -10,10 +10,12 @@ if (!isset($conn)) {
     die("Database connection failed.");
 }
 
-$sql = "SELECT u.user_id, u.username, u.email, e.event_name
+$sql = "SELECT u.user_id, u.username, u.email, 
+               IFNULL(GROUP_CONCAT(e.event_name SEPARATOR ', '), 'No events registered') AS event_names
         FROM users u 
         LEFT JOIN events e ON u.id_events = e.id_events 
-        WHERE u.role = 'user'";
+        WHERE u.role = 'user'
+        GROUP BY u.user_id, u.username, u.email";
 
 $stmt = $conn->prepare($sql);
 $stmt->execute();
@@ -25,8 +27,8 @@ if ($result->num_rows > 0) {
         echo '<td>' . htmlspecialchars($row['username']) . '</td>';
         echo '<td>' . htmlspecialchars($row['email']) . '</td>';
 
-        $event_name = !empty($row['event_name']) ? htmlspecialchars($row['event_name']) : 'No event registered';
-        echo '<td>' . $event_name . '</td>'; 
+        $event_names = htmlspecialchars($row['event_names']);
+        echo '<td>' . $event_names . '</td>'; 
 
         echo "<td>";
         echo "<a class='btn btn-danger btn-sm rounded-3' data-bs-toggle='modal' data-bs-target='#deleteUserModal' data-user-id='" . htmlspecialchars($row['user_id']) . "'>";
@@ -35,8 +37,8 @@ if ($result->num_rows > 0) {
         echo "<path d='M4 7l16 0' />";
         echo "<path d='M10 11l0 6' />";
         echo "<path d='M14 11l0 6' />";
-        echo "<path d='M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12' />";
-        echo "<path d='M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3' />";
+        echo "<path d='M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12'/>";
+        echo "<path d='M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3'/>";
         echo "</svg></a>";
         echo "</td>";
         

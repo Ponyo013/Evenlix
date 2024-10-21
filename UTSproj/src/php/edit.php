@@ -100,31 +100,3 @@ if ($result->num_rows > 0) {
 
 $conn->close();
 ?>
-
-<!-- Pre Populate The Data -->
-<script>
-   document.addEventListener('DOMContentLoaded', function () {
-    const editEventModal = document.getElementById('editEventModal');
-    editEventModal.addEventListener('show.bs.modal', function (event) {
-        const button = event.relatedTarget;
-        const id = button.getAttribute('data-id');
-        const name = button.getAttribute('data-name');
-        const datetime = button.getAttribute('data-datetime');
-        const capacity = button.getAttribute('data-capacity');
-        const location = button.getAttribute('data-location');
-        const description = button.getAttribute('data-description');
-        const status = button.getAttribute('data-status');
-      
-
- 
-        document.getElementById('event_id').value = id;
-        document.getElementById('event-name').value = name;
-        document.getElementById('DnT').value = datetime;
-        document.getElementById('slot').value = capacity;
-        document.getElementById('lokasi').value = location;
-        document.getElementById('deskripsi').value = description;
-        document.getElementById('status').value = status;
-
-        }); 
-    });
-</script>

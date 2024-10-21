@@ -29,13 +29,15 @@
                     <thead>
                         <tr>
                             <th>Event Name</th>
-                            <th>Date</th>
+                            <th class="text-start">Date</th>
                             <th>Status</th>
                             <th>Registrant</th>
                         </tr>
                     </thead>
                     <tbody>
-
+                      <?php
+                        require "ViewRegis-process.php";
+                      ?>
                     </tbody>
                 </table>
             </div>
