@@ -12,10 +12,7 @@ if ($result->num_rows > 0) {
 
         echo "<img src='" . $row['photo'] . "' class='card-img-top' alt='" . $row['event_name'] . "' style='height: 350px; object-fit: cover;'>";
 
-        echo "<div class='position-absolute top-0 start-0 bg-dark rounded-bottom text-white p-1' style='font-weight: bold; font-size: 1rem;'>";
-        echo "" . ucfirst($row['status']);  
-        echo "</div>";
-
+       
         echo "</div>";
         echo "<div class='card-body p-4'>";
         echo "<div class='d-flex align-items-center gap-4'>";
@@ -70,6 +67,10 @@ if ($result->num_rows > 0) {
         echo "</svg>" . $row['max_capacity'];
         echo "</div>";
         echo "</div>";
+        echo "<div class='bg-dark rounded-2  text-white p-1' style='font-weight: bold; font-size: 1rem;'>";
+        echo "" . ucfirst($row['status']);  
+        echo "</div>";
+
 
         echo "</div>"; 
         echo "</div>"; 

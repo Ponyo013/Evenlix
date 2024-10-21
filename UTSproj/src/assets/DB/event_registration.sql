@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Waktu pembuatan: 21 Okt 2024 pada 06.31
+-- Waktu pembuatan: 21 Okt 2024 pada 11.39
 -- Versi server: 8.0.39
 -- Versi PHP: 8.2.12
 
@@ -39,6 +39,13 @@ CREATE TABLE `events` (
   `status` varchar(30) COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data untuk tabel `events`
+--
+
+INSERT INTO `events` (`id_events`, `event_name`, `date_time`, `max_capacity`, `location`, `description`, `photo`, `created_at`, `status`) VALUES
+(14, 'ERIC CHOU', '2024-10-21 13:25:00', 2, 'Jakarta, Indonesia', 'AVAILABLE NOW!!!\r\n', 'assets/images/blog/eric-chou-instagram_ratio-16x9.jpg', '2024-10-21 06:26:00', 'closed');
+
 -- --------------------------------------------------------
 
 --
@@ -51,6 +58,7 @@ CREATE TABLE `users` (
   `username` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
   `role` enum('admin','user') NOT NULL DEFAULT 'user',
+  `foto` varchar(50) DEFAULT NULL,
   `id_events` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -58,10 +66,9 @@ CREATE TABLE `users` (
 -- Dumping data untuk tabel `users`
 --
 
-INSERT INTO `users` (`user_id`, `email`, `username`, `password`, `role`, `id_events`) VALUES
-(1, 'morenopradita013@gmail.com', 'Moreno Pradita', '$2y$10$4ShOepyy8VfDtKvlCA59vecTRN.ZQNL0ScIBjo7.zNYji79obiXNS', 'user', NULL),
-(2, 'admin@example.com', 'admin', '$2y$10$oV1xY7SBOUUgYxFIus6yL.EAl41qp2hiIMiYkJyam9pB6KaygsAMG', 'admin', NULL),
-(4, 'masteedarkflame@gmail.com', 'Ponyo', '$2y$10$eJGwRXV6v0H/clPLslUV/uEbL4k7V9zGDMkC9xV9kg3vuxjfzU1FG', 'user', NULL);
+INSERT INTO `users` (`user_id`, `email`, `username`, `password`, `role`, `foto`, `id_events`) VALUES
+(1, 'morenopradita013@gmail.com', 'Moreno Pradita', '$2y$10$GVleQe7VX9Kjd.Vq/x.jwO4UkXebrdW0TSxaIgp/GmE5pVQi6blNK', 'user', '4x6.JPG', NULL),
+(2, 'admin@example.com', 'admin', '$2y$10$oV1xY7SBOUUgYxFIus6yL.EAl41qp2hiIMiYkJyam9pB6KaygsAMG', 'admin', NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -91,7 +98,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT untuk tabel `events`
 --
 ALTER TABLE `events`
-  MODIFY `id_events` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_events` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT untuk tabel `users`
