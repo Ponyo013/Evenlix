@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -94,19 +93,45 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-8 mt-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h4 class="card-title">Event Registration History</h4>
-                                    <ul class="list-group">
-                                        <li class="list-group-item">
-                                            Event 1 - <span class="badge bg-success">Registered</span> <span class="float-end">10th Oct 2024</span>
-                                        </li>
-                                    </ul>
+
+                        <?php
+                            $userId = $_SESSION['user_id'];
+
+                            require "connect.php";
+                            $sql = "SELECT r.registration_id, r.registration_date, e.event_name 
+                                    FROM registrations r 
+                                    JOIN events e ON r.event_id = e.id_events 
+                                    WHERE r.user_id = ? 
+                                    ORDER BY r.registration_date DESC";
+
+                            $stmt = $conn->prepare($sql);
+                            $stmt->bind_param("i", $userId); 
+                            $stmt->execute();
+                            $result = $stmt->get_result();
+
+                            ?>
+
+
+                            <div class="col-lg-8 mt-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Event Registration History</h4>
+                                        <ul class="list-group">
+                                            <?php if ($result->num_rows > 0): ?>
+                                                <?php while ($row = $result->fetch_assoc()): ?>
+                                                    <li class="list-group-item">
+                                                        <?php echo htmlspecialchars($row['event_name']); ?> - 
+                                                        <span class="badge bg-success">Registered</span> 
+                                                        <span class="float-end"><?php echo date('jS M Y', strtotime($row['registration_date'])); ?></span>
+                                                    </li>
+                                                <?php endwhile; ?>
+                                            <?php else: ?>
+                                                <li class="list-group-item">No registration history found.</li>
+                                            <?php endif; ?>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-
 
                         <!-- Change Password Modal -->
                         <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
