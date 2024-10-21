@@ -1,16 +1,23 @@
 document.addEventListener('DOMContentLoaded', function () {
     var deleteModal = document.getElementById('deleteModal');
     var deleteEventIdInput = document.getElementById('deleteEventId');
-    var confirmDeleteButton = document.getElementById('confirmDelete');
 
-    deleteModal.addEventListener('show.bs.modal', function (event) {
-        var button = event.relatedTarget;
-        var eventId = button.getAttribute('data-id');
-        deleteEventIdInput.value = eventId;
-    });
+    if (deleteModal) {
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            var eventId = button.getAttribute('data-id');
+            deleteEventIdInput.value = eventId; 
+        });
+    }
 
-    confirmDeleteButton.addEventListener('click', function () {
-        var eventId = deleteEventIdInput.value;
-        window.location.href = "delete-process.php?id_events=" + eventId;
-    });
+    var deleteUserModal = document.getElementById('deleteUserModal');
+    var deleteUserIdInput = document.getElementById('userId');
+
+    if (deleteUserModal) {
+        deleteUserModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            var userId = button.getAttribute('data-user-id');
+            deleteUserIdInput.value = userId; 
+        });
+    }
 });

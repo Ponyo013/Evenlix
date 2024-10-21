@@ -46,11 +46,13 @@
           </div>
           <div class="modal-body">
             Are you sure you want to delete this event?
-            <input type="hidden" id="deleteEventId">
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-primary text-white" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
+            <form id="deleteForm" action="delete-process.php" method="POST">
+                <input type="hidden" id="deleteEventId" name="id_events"> 
+                <button type="submit" class="btn btn-danger">Delete</button> 
+            </form>
           </div>
         </div>
       </div>
