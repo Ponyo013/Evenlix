@@ -1,4 +1,4 @@
-<?php
+<?php 
 $username = isset($_SESSION['username']) ? $_SESSION['username'] : 'Guest';
 $currentDate = date('l, F j, Y');
 $userImage = isset($_SESSION['foto']) ? $_SESSION['foto'] : '../assets/images/profile/default.jpg';
@@ -7,6 +7,11 @@ $userImage = isset($_SESSION['foto']) ? $_SESSION['foto'] : '../assets/images/pr
 <link rel="stylesheet" href="../assets/css/styles.min.css" />
 <header class="app-header">
   <nav class="navbar navbar-expand-lg navbar-light">
+            <li class="nav-item d-block d-xl-none">
+              <a class="nav-link sidebartoggler nav-icon-hover" id="headerCollapse" href="javascript:void(0)">
+              <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 24 24"><path fill="currentColor" d="M4 6a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1m0 6a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1m1 5a1 1 0 1 0 0 2h14a1 1 0 1 0 0-2z"/></svg>
+              </a>
+            </li>
     <div class="container-fluid mt-2">
       <div class="navbar-brand">
         <span class="fs-5">Welcome back, <?php echo htmlspecialchars($username); ?></span>
@@ -33,47 +38,4 @@ $userImage = isset($_SESSION['foto']) ? $_SESSION['foto'] : '../assets/images/pr
     </div>
   </nav>
 </header>
-<script src="../assets/libs/simplebar/dist/simplebar.js"></script>
-<script src="../assets/js/sidebarmenu.js"></script>
-<script src="../assets/js/app.min.js"></script>
-<script>
-  
-$(function () {
-  // Admin Panel settings
-
-  //****************************
-  /* This is for the mini-sidebar if width is less then 1170*/
-  //****************************
-  var setsidebartype = function () {
-    var width =
-      window.innerWidth > 0 ? window.innerWidth : this.screen.width;
-    if (width < 1199) {
-      $("#main-wrapper").attr("data-sidebartype", "mini-sidebar");
-      $("#main-wrapper").addClass("mini-sidebar");
-    } else {
-      $("#main-wrapper").attr("data-sidebartype", "full");
-      $("#main-wrapper").removeClass("mini-sidebar");
-    }
-  };
-  $(window).ready(setsidebartype);
-  $(window).on("resize", setsidebartype);
-  //****************************
-  /* This is for sidebartoggler*/
-  //****************************
-  $(".sidebartoggler").on("click", function () {
-    $("#main-wrapper").toggleClass("mini-sidebar");
-    if ($("#main-wrapper").hasClass("mini-sidebar")) {
-      $(".sidebartoggler").prop("checked", !0);
-      $("#main-wrapper").attr("data-sidebartype", "mini-sidebar");
-    } else {
-      $(".sidebartoggler").prop("checked", !1);
-      $("#main-wrapper").attr("data-sidebartype", "full");
-    }
-  });
-  $(".sidebartoggler").on("click", function () {
-    $("#main-wrapper").toggleClass("show-sidebar");
-  });
-})
-</script>
-
 

@@ -5,15 +5,17 @@
 <aside class="left-sidebar">
   <!-- Sidebar scroll -->
   <div>
-    <div class="d-flex align-items-center">
+    <div class="brand-logo d-flex align-items-center justify-content-between" style="width: 80%; height: auto; padding: 10px;" >
       <a href="./index.php">
-        <!-- <img class="logo" src="../assets/images/logos/logo.png" alt="Logo" style="width: 250px; height: auto;" /> -->
+      <img class="logo" src="../assets/images/logos/EVENLIX.png" alt="Logo" style="margin-left: 20px;width: 150px; height: auto;" />
       </a>
-      <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
-        <i class="ti ti-x fs-8"></i>
+      <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" style="margin-left: 20px;" id="sidebarCollapse">
+        <svg xmlns="http://www.w3.org/2000/svg" width="2.5rem" height="2.5rem" viewBox="0 0 24 24" class="hover-effect">
+        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.5" d="m7.757 16.243l8.486-8.486m0 8.486L7.757 7.757"/>
+        </svg>
       </div>
     </div>
-
+    
     <!-- Sidebar navigation -->
     <nav class="sidebar-nav scroll-sidebar" data-simplebar>
       <ul id="sidebarnav">
