@@ -118,7 +118,7 @@
           <li class="sidebar-item">
             <a class="sidebar-link" href="./viewevents.php" aria-expanded="false">
               <span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M16 21q-.825 0-1.412-.587T14 19v-4q0-.825.588-1.412T16 13h4q.825 0 1.413.588T22 15v4q0 .825-.587 1.413T20 21zm0-2h4v-4h-4zM2 18v-2h9v2zm14-7q-.825 0-1.412-.587T14 9V5q0-.825.588-1.412T16 3h4q.825 0 1.413.588T22 5v4q0 .825-.587 1.413T20 11zm0-2h4V5h-4zM2 8V6h9v2zm16-1"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M10.95 18.35L7.4 14.8l1.45-1.45l2.1 2.1l4.2-4.2l1.45 1.45zM5 22q-.825 0-1.412-.587T3 20V6q0-.825.588-1.412T5 4h1V2h2v2h8V2h2v2h1q.825 0 1.413.588T21 6v14q0 .825-.587 1.413T19 22zm0-2h14V10H5zM5 8h14V6H5zm0 0V6z"/></svg>
               </span>
               <span class="hide-menu">Available Events</span>
             </a>
@@ -133,6 +133,64 @@
             </a>
           </li>
         <?php endif; ?>
+        
+        <?php if (!isset($_SESSION['role'])): ?>
+          <li class="nav-small-cap">
+            <span class="hide-menu">Login to access feature</span>
+          </li>
+
+          <li class="sidebar-item">
+            <a class="sidebar-link" href="javascript:void(0)" onclick="showLoginModal()" aria-expanded="false">
+              <span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M16 21q-.825 0-1.412-.587T14 19v-4q0-.825.588-1.412T16 13h4q.825 0 1.413.588T22 15v4q0 .825-.587 1.413T20 21zm0-2h4v-4h-4zM2 18v-2h9v2zm14-7q-.825 0-1.412-.587T14 9V5q0-.825.588-1.412T16 3h4q.825 0 1.413.588T22 5v4q0 .825-.587 1.413T20 11zm0-2h4V5h-4zM2 8V6h9v2zm16-1"/></svg>
+              </span>
+              <span class="hide-menu">Available Events</span>
+            </a>
+          </li>
+          
+          <li class="sidebar-item">
+            <a class="sidebar-link" href="javascript:void(0)" onclick="showLoginModal()" aria-expanded="false">
+              <span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M21 17V8H7v9zm0-14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h1V1h2v2h8V1h2v2zM3 21h14v2H3a2 2 0 0 1-2-2V9h2zm16-6h-4v-4h4z"/></svg>
+              </span>
+              <span class="hide-menu">My Events</span>
+            </a>
+          </li>
+      <?php endif; ?>
+
+      <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header bg-dark">
+              <h5 class="modal-title text-light" id="loginModalLabel">Confirmation Page</h5>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              You need to log in to access this feature. Do you want to proceed to the login page?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cancel</button>
+              <button type="button" class="btn btn-primary" id="confirmLoginBtn">Proceed to Login</button>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+
+  function showLoginModal() {
+    var loginModal = new bootstrap.Modal(document.getElementById('loginModal'), {
+      backdrop: false, 
+      keyboard: true   // Allow close on Esc key
+    });
+    loginModal.show();
+  }
+
+  // Redirect to login page when the user clicks 'Proceed to Login'
+  document.getElementById('confirmLoginBtn').addEventListener('click', function() {
+    window.location.href = './login.php';
+  });
+</script>
 
       </ul>
     </nav>
