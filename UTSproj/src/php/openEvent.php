@@ -7,7 +7,8 @@ if (session_status() === PHP_SESSION_NONE) {
 
 $user_id = $_SESSION['user_id']; 
 
-$sql_user = "SELECT email FROM users WHERE user_id = ?";
+// Updated SQL to fetch both email and username
+$sql_user = "SELECT email, username FROM users WHERE user_id = ?";
 $stmt_user = $conn->prepare($sql_user);
 $stmt_user->bind_param("i", $user_id);
 $stmt_user->execute();
@@ -16,8 +17,10 @@ $result_user = $stmt_user->get_result();
 if ($result_user->num_rows > 0) {
     $user = $result_user->fetch_assoc();
     $user_email = $user['email']; 
+    $username = $user['username']; // Fetching username
 } else {
     $user_email = '';
+    $username = ''; // Set username to empty if not found
 }
 
 $stmt_user->close();
@@ -25,24 +28,24 @@ $stmt_user->close();
 $sql = "SELECT * FROM events WHERE status = 'open'";
 $result = $conn->query($sql);
 
-
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         echo "<div class='col-lg-5 mb-5 mx-4'>";
         echo "<div class='card overflow-hidden hover-img'>";
         echo "<div class='position-relative'>";
-        echo "<img src='" . $row['photo'] . "' class='card-img-top' alt='" . $row['event_name'] . "' style='height: 350px; object-fit: cover;'>";
 
+        echo "<img src='" . $row['photo'] . "' class='card-img-top' alt='" . $row['event_name'] . "' style='height: 350px; object-fit: cover;'>";
         echo "</div>";
         echo "<div class='card-body p-4'>";
         echo "<div class='d-flex align-items-center gap-4'>";
+
         echo "<div class='d-flex align-items-center gap-2'>";
         echo "<h2 class='fw-bold' style='font-size: 1.5rem; text-transform: uppercase;'>" . $row['event_name'] . "</h2>";
         echo "</div>";
 
         $dateTime = new DateTime($row['date_time']);
         $formattedDateTime = $dateTime->format('Y-m-d / H:i'); 
-    
+        
         echo "<div class='d-flex align-items-center fs-2 ms-auto'>";
         echo "<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='icon icon-tabler icons-tabler-outline icon-tabler-calendar-event'>";
         echo "<path stroke='none' d='M0 0h24v24H0z' fill='none'/>";
@@ -55,6 +58,7 @@ if ($result->num_rows > 0) {
         echo "</div>";
         echo "</div>"; 
 
+        
         echo "<p>";
         echo "<span class='short-desc' id='short-desc-" . $row['id_events'] . "'>";
         echo substr($row['description'], 0, 100); 
@@ -66,7 +70,7 @@ if ($result->num_rows > 0) {
         echo "<button class='btn text-primary p-0' onclick='toggleDescription(" . $row['id_events'] . ")' id='toggle-btn-" . $row['id_events'] . "'>";
         echo (strlen($row['description']) > 100) ? "Read More" : "";
         echo "</button>";
-        echo "</p>";
+        echo "</p>"; 
 
         echo "<div class='d-flex align-items-center gap-4'>";
         echo "<div class='d-flex align-items-center gap-2'>";
@@ -84,7 +88,6 @@ if ($result->num_rows > 0) {
         echo "<path d='M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2' />";
         echo "</svg>" . $row['max_capacity'];
         echo "</div>";
-        
         echo "</div>";
         $status = ucfirst($row['status']);
         $bgColor = '';
@@ -102,23 +105,19 @@ if ($result->num_rows > 0) {
             default:
                 $bgColor = 'bg-secondary';
         }
-
-        echo "<div class='d-flex justify-content-between align-items-center mt-3'>";
-
-        echo "<div class='$bgColor mt-3 rounded-2 text-white text-center p-1 w-25' style='font-weight: bold; font-size: 1rem;'>";
-        echo $status;  
-        echo "</div>"; 
-
-        echo "<button class='btn btn-dark mt-3 rounded-2 text-white text-center p-1 w-25' style='font-weight: bold; font-size: 1rem;' data-bs-toggle='modal' data-bs-target='#registerEventModal' onclick='setEventId(" . $row['id_events'] . ")'>Register</button>";
-        echo "</div></div></div>";
-
-        echo "</div>"; 
-
-        echo "</div>"; 
-        echo "</div>"; 
-
-        echo "</div>"; 
         
+        echo "<div class='d-flex align-items-center'>";
+        echo "<div class='$bgColor mt-3 rounded-2 text-white text-center p-1 w-25' style='font-weight: bold; font-size: 1rem;'>";
+        echo $status;
+        echo "</div>";
+        echo "<button class='btn btn-dark mt-3 ms-3 rounded-2 text-white text-center p-1 w-25' style='font-weight: bold; font-size: 1rem;' data-bs-toggle='modal' data-bs-target='#registerEventModal' onclick='setEventId(" . $row['id_events'] . ")'>Register</button>";
+        echo "</div>";
+
+
+        
+        echo "</div>"; 
+        echo "</div>"; 
+        echo "</div>"; 
     }
 } else {
     echo "<p class='text-center'>No events found.</p>";
@@ -130,26 +129,28 @@ $conn->close();
 <div class="modal fade" id="registerEventModal" tabindex="-1" aria-labelledby="registerEventModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="registerEventModalLabel">Event Registration Form</h5>
+            <div class="modal-header bg-primary">
+                <h5 class="modal-title text-light" id="registerEventModalLabel">Event Registration Form</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="registerEventForm" method="POST" action="open-register.php">
                     <input type="hidden" name="event_id" id="event_id">
                     <div class="form-group mb-3">
-                        <label for="full_name">Full Name</label>
-                        <input type="text" name="full_name" id="full_name" class="form-control" required>
+                        <label for="username">Name</label>
+                        <input type="text" name="name" id="name" class="form-control" required value="<?php echo htmlspecialchars($username); ?>" required>
                     </div>
-                    <div class="form-group mb-3">
+                    <div class="form-group mb-3 ">
                         <label for="email">Email</label>
-                        <input type="email" name="email" id="email" class="form-control" required value="<?php echo htmlspecialchars($user_email); ?>" readonly>
+                        <input type="email" name="email" id="email" class="form-control bg-secondary" required value="<?php echo htmlspecialchars($user_email); ?>" readonly>
                     </div>
                     <div class="form-group mb-3">
                         <label for="tickets">Number of Tickets</label>
-                        <input type="number" name="tickets" id="tickets" class="form-control" min="1" max="5" required>
+                        <input type="number" name="tickets" id="tickets" class="form-control" min="1" max="1" value="1" required>
                     </div>
-                    <button type="submit" class="btn btn-primary">Register</button>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Register</button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -157,6 +158,6 @@ $conn->close();
 </div>
 <script>
     function setEventId(eventId) {
-    document.getElementById('event_id').value = eventId;
-}
+        document.getElementById('event_id').value = eventId;
+    }
 </script>

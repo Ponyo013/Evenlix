@@ -57,7 +57,7 @@
             Are you sure you want to delete this user's account?
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary text-white" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-dark text-white" data-bs-dismiss="modal">Close</button>
             <form id="deleteForm" action="user-deletion.php" method="POST">
               <input type="hidden" id="userId" name="user_id"> 
               <button type="submit" class="btn btn-danger dete">Delete</button> 

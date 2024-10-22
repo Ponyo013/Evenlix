@@ -48,7 +48,7 @@
             Are you sure you want to delete this event?
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary text-white" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-dark text-white" data-bs-dismiss="modal">Close</button>
             <form id="deleteForm" action="delete-process.php" method="POST">
                 <input type="hidden" id="deleteEventId" name="id_events"> 
                 <button type="submit" class="btn btn-danger">Delete</button> 

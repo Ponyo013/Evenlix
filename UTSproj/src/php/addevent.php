@@ -26,9 +26,14 @@
       <!-- Main Content -->
       <div class="container-fluid">
         <!-- Add Event Form Section -->
+        <div class="bg-white rounded-4 p-5 mx-auto" style="max-width: 900px;">
         <div class="row justify-content-center">
           <div class="container mt-5">
-            <h2 class="text-center mb-4">Add New Event</h2>
+
+            <h2 class="text-center my-2">Add New Event</h2>
+          
+
+          
 
             <!-- Add Event Form -->
             <form action="add-process.php" method="POST" enctype="multipart/form-data" class="mt-4">
@@ -80,13 +85,16 @@
               </div>
 
               <!-- Submit Button -->
-              <button type="submit" class="btn btn-primary">Add Event</button>
+               <div class="text-center mt-5">
+                 <button type="submit" class="btn btn-primary">Add Event</button>
+               </div>
 
             </form>
           </div>
         </div>
       </div>
     </div>
+  </div>
   </div>
 
   <!-- JavaScript Files -->
