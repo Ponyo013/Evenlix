@@ -1,5 +1,6 @@
 <?php
 require "connect.php";
+$role = isset($_SESSION['role']) ? $_SESSION['role'] : null; 
 $userId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null; 
 $username = 'Guest';
 $userImage = '../assets/images/profile/default.jpg'; 
@@ -34,6 +35,7 @@ if ($userId) {
         <span class="fs-5">Welcome back, <?php echo htmlspecialchars($username); ?></span>
         <div class="small text-muted"><?php echo htmlspecialchars($currentDate); ?></div>
       </div>
+      <?php if ($role === 'admin' || $role === 'user'): ?>
       <div class="navbar-collapse justify-content-end" id="navbarNav">
         <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
           <li class="nav-item dropdown">
@@ -52,6 +54,23 @@ if ($userId) {
           </li>
         </ul>
       </div>
+      <?php else: ?><!-- If the user is not admin or user, display the Login button -->
+        <li class="nav-item d-flex align-items-center">
+    <a href="login.php" class="btn btn-primary me-2">Login</a>
+    <div class="navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
+            <li class="nav-item">
+                <a class="nav-link nav-icon-hover" href="login.php">
+                    <img src="<?php echo htmlspecialchars($userImage); ?>" alt="" width="50" height="50" class="rounded-circle" style="object-fit: cover;">
+                </a>
+            </li>
+        </ul>
+    </div>
+</li>
+
+
+
+    <?php endif; ?>
     </div>
   </nav>
 </header>
