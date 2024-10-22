@@ -44,7 +44,7 @@
               echo $message['text'];
               echo '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
               echo '</div>';
-              unset($_SESSION['message']);
+              unset($_SESSION['message-cancel']);
           }
         ?>
 

@@ -9,16 +9,26 @@ if (isset($_POST['event_id'], $_POST['full_name'], $_POST['email'], $_POST['tick
     $tickets = (int) $_POST['tickets'];
     $user_id = $_SESSION['user_id'];
 
-    $check_sql = "SELECT * FROM registrations WHERE user_id = ? AND event_id = ?";
-    $stmt_check = $conn->prepare($check_sql);
-    $stmt_check->bind_param("ii", $user_id, $event_id);
-    $stmt_check->execute();
-    $result_check = $stmt_check->get_result();
+    $check_slots_sql = "SELECT SUM(tickets) AS total_tickets FROM registrations WHERE event_id = ?";
+    $stmt_check_slots = $conn->prepare($check_slots_sql);
+    $stmt_check_slots->bind_param("i", $event_id);
+    $stmt_check_slots->execute();
+    $result_check_slots = $stmt_check_slots->get_result();
+    $row_check_slots = $result_check_slots->fetch_assoc();
+    $total_registered_tickets = $row_check_slots['total_tickets'] ?? 0;
 
-    if ($result_check->num_rows > 0) {
+    $event_capacity_sql = "SELECT max_capacity FROM events WHERE id_events = ?";
+    $stmt_event_capacity = $conn->prepare($event_capacity_sql);
+    $stmt_event_capacity->bind_param("i", $event_id);
+    $stmt_event_capacity->execute();
+    $result_event_capacity = $stmt_event_capacity->get_result();
+    $row_event_capacity = $result_event_capacity->fetch_assoc();
+    $max_capacity = $row_event_capacity['max_capacity'];
+
+    if (($total_registered_tickets + $tickets) > $max_capacity) {
         $_SESSION['message'] = [
             'type' => 'danger',
-            'text' => 'You have already registered for this event.'
+            'text' => 'Registration failed. The event is full or not enough tickets are available.'
         ];
     } else {
         $sql = "INSERT INTO registrations (user_id, event_id, tickets) VALUES (?, ?, ?)";
@@ -40,8 +50,9 @@ if (isset($_POST['event_id'], $_POST['full_name'], $_POST['email'], $_POST['tick
         $stmt->close();
     }
 
-    $stmt_check->close();
-    header('Location: myevents.php'); 
+    $stmt_check_slots->close();
+    $stmt_event_capacity->close();
+    header('Location: myevents.php');
     exit();
 } else {
     $_SESSION['message'] = [

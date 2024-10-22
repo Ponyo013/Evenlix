@@ -32,6 +32,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($stmt->execute()) {
+        $_SESSION['username'] = $username;
+
+        if (isset($fileName)) {
+            $_SESSION['foto'] = $fileName;
+        }
+
         $_SESSION['success_message'] = "Profile updated successfully!";
         header("Location: profile.php"); 
         exit;
