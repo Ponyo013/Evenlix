@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 22, 2024 at 06:28 AM
+-- Generation Time: Oct 22, 2024 at 08:38 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -64,6 +64,13 @@ CREATE TABLE `registrations` (
   `registration_date` timestamp NOT NULL DEFAULT current_timestamp(),
   `tickets` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `registrations`
+--
+
+INSERT INTO `registrations` (`registration_id`, `user_id`, `event_id`, `registration_date`, `tickets`) VALUES
+(10, 5, 20, '2024-10-22 05:58:46', 10);
 
 -- --------------------------------------------------------
 
@@ -131,7 +138,7 @@ ALTER TABLE `events`
 -- AUTO_INCREMENT for table `registrations`
 --
 ALTER TABLE `registrations`
-  MODIFY `registration_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `registration_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `users`
