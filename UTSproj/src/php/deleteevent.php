@@ -42,7 +42,7 @@
         <div class="modal-content">
           <div class="modal-header bg-danger">
             <h1 class="modal-title text-white fs-5" id="deleteModalLabel">Delete Event</h1>
-            <button type="button" class="btn-close btn-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
             Are you sure you want to delete this event?

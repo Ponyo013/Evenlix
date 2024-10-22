@@ -6,6 +6,18 @@ $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
+
+        $event_id = $row['id_events']; // Assuming this is the column name for the event ID
+        $ticket_query = "SELECT SUM(tickets) AS registered_participants FROM registrations WHERE event_id = $event_id";
+        $ticket_result = $conn->query($ticket_query);
+
+        // Set default registered participants to 0 if there are no ticket sales
+        $registered_participants = 0;
+        if ($ticket_result) {
+            $ticket_row = $ticket_result->fetch_assoc();
+            $registered_participants = $ticket_row['registered_participants'] ?? 0;
+        }
+
         echo "<div class='col-lg-5 mb-5 mx-4'>";
         echo "<div class='card overflow-hidden hover-img'>";
         echo "<div class='position-relative'>";
@@ -62,9 +74,10 @@ if ($result->num_rows > 0) {
         echo "<path stroke='none' d='M0 0h24v24H0z' fill='none'/>";
         echo "<path d='M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0' />";
         echo "<path d='M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2' />";
-        echo "</svg>" . $row['max_capacity'];
+        echo "</svg> " . $registered_participants . '/' . $row['max_capacity'];
         echo "</div>";
         echo "</div>";
+
         $status = ucfirst($row['status']);
         $bgColor = '';
         

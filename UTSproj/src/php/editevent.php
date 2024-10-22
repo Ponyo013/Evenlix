@@ -36,9 +36,9 @@
   <div class="modal fade" id="editEventModal" tabindex="-1" aria-labelledby="editEventModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
-        <div class="modal-header bg-dark">
-          <h5 class="modal-title text-light" id="editEventModalLabel">Edit Event</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-header bg-warning">
+          <h5 class="modal-title text-dark" id="editEventModalLabel">Edit Event</h5>
+          <button type="button" class="btn-close btn-close-dark" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <form id="editEventForm" method="POST" action="edit-process.php" enctype="multipart/form-data">
@@ -77,7 +77,7 @@
               </select>
             </div>
             <div class="text-center">
-              <button type="submit" class="btn btn-primary">Update Event</button>
+              <button type="submit" class="btn btn-warning">Update</button>
             </div>
           </form>
         </div>

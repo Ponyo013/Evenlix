@@ -6,6 +6,18 @@ $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
+
+        $event_id = $row['id_events']; // Assuming this is the column name for the event ID
+        $ticket_query = "SELECT SUM(tickets) AS registered_participants FROM registrations WHERE event_id = $event_id";
+        $ticket_result = $conn->query($ticket_query);
+
+        // Set default registered participants to 0 if there are no ticket sales
+        $registered_participants = 0;
+        if ($ticket_result) {
+            $ticket_row = $ticket_result->fetch_assoc();
+            $registered_participants = $ticket_row['registered_participants'] ?? 0;
+        }
+
         echo "<div class='col-lg-5 mb-5 mx-4'>";
         echo "<div class='card overflow-hidden hover-img'>";
         echo "<div class='position-relative'>";
@@ -61,26 +73,9 @@ if ($result->num_rows > 0) {
         echo "<path stroke='none' d='M0 0h24v24H0z' fill='none'/>";
         echo "<path d='M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0' />";
         echo "<path d='M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2' />";
-        echo "</svg>" . $row['max_capacity'];
+        echo "</svg> " . $registered_participants . '/' . $row['max_capacity'];
         echo "</div>";
         
-        echo "<div class='d-flex justify-content-center align-items-center'>";
-        echo "<button class='btn btn-warning btn-sm rounded-3' data-bs-toggle='modal' data-bs-target='#editEventModal' 
-                data-id='" . $row['id_events'] . "'
-                data-name='" . htmlspecialchars($row['event_name'], ENT_QUOTES) . "'
-                data-datetime='" . $row['date_time'] . "'
-                data-capacity='" . $row['max_capacity'] . "'
-                data-location='" . htmlspecialchars($row['location'], ENT_QUOTES) . "'
-                data-description='" . htmlspecialchars($row['description'], ENT_QUOTES) . "'
-                data-status='" . $row['status'] . "'>";
-        echo "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='icon icon-tabler icon-tabler-file-pencil'>";
-        echo "<path stroke='none' d='M0 0h24v24H0z' fill='none'/>";
-        echo "<path d='M14 3v4a1 1 0 0 0 1 1h4' />";
-        echo "<path d='M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z' />";
-        echo "<path d='M10 18l5 -5a1.414 1.414 0 0 0 -2 -2l-5 5v2h2z' />";
-        echo "</svg>";
-        echo "</button>";
-        echo "</div>";
         echo "</div>"; 
         $status = ucfirst($row['status']);
         $bgColor = '';
@@ -99,13 +94,30 @@ if ($result->num_rows > 0) {
                 $bgColor = 'bg-secondary';
         }
         
-        echo "<div class='$bgColor mt-3 rounded-2 text-white text-center p-1 w-25' style='font-weight: bold; font-size: 1rem;'>";
-        echo $status;
-        echo "</div>";
-        echo "</div>"; 
-        echo "</div>"; 
-
-        echo "</div>"; 
+        echo "<div class='d-flex justify-content-between align-items-end'>";
+            echo "<div class='$bgColor mt-3 rounded-2 text-white text-center p-1 w-25' style='font-weight: bold; font-size: 1rem;'>";
+            echo $status;
+            echo "</div>"; 
+            echo "<button class='btn btn-warning btn-sm rounded-3' data-bs-toggle='modal' data-bs-target='#editEventModal' 
+            data-id='" . $row['id_events'] . "'
+            data-name='" . htmlspecialchars($row['event_name'], ENT_QUOTES) . "'
+            data-datetime='" . $row['date_time'] . "'
+            data-capacity='" . $row['max_capacity'] . "'
+            data-location='" . htmlspecialchars($row['location'], ENT_QUOTES) . "'
+            data-description='" . htmlspecialchars($row['description'], ENT_QUOTES) . "'
+            data-status='" . $row['status'] . "'>";
+            echo "<svg xmlns='http://www.w3.org/2000/svg' width='25' height='25' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='icon icon-tabler icon-tabler-file-pencil'>";
+            echo "<path stroke='none' d='M0 0h24v24H0z' fill='none'/>";
+            echo "<path d='M14 3v4a1 1 0 0 0 1 1h4' />";
+            echo "<path d='M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z' />";
+            echo "<path d='M10 18l5 -5a1.414 1.414 0 0 0 -2 -2l-5 5v2h2z' />";
+            echo "</svg>";
+            echo "</button>";
+            echo "</div>";
+            echo "</div>"; 
+            echo "</div>"; 
+            
+            echo "</div>"; 
         
     }
 } else {

@@ -30,6 +30,18 @@ $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
+
+        $event_id = $row['id_events']; // Assuming this is the column name for the event ID
+        $ticket_query = "SELECT SUM(tickets) AS registered_participants FROM registrations WHERE event_id = $event_id";
+        $ticket_result = $conn->query($ticket_query);
+
+        // Set default registered participants to 0 if there are no ticket sales
+        $registered_participants = 0;
+        if ($ticket_result) {
+            $ticket_row = $ticket_result->fetch_assoc();
+            $registered_participants = $ticket_row['registered_participants'] ?? 0;
+        }
+
         echo "<div class='col-lg-5 mb-5 mx-4'>";
         echo "<div class='card overflow-hidden hover-img'>";
         echo "<div class='position-relative'>";
@@ -86,7 +98,7 @@ if ($result->num_rows > 0) {
         echo "<path stroke='none' d='M0 0h24v24H0z' fill='none'/>";
         echo "<path d='M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0' />";
         echo "<path d='M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2' />";
-        echo "</svg>" . $row['max_capacity'];
+        echo "</svg> " . $registered_participants . '/' . $row['max_capacity'];
         echo "</div>";
         echo "</div>";
         $status = ucfirst($row['status']);
@@ -106,7 +118,7 @@ if ($result->num_rows > 0) {
                 $bgColor = 'bg-secondary';
         }
         
-        echo "<div class='d-flex align-items-center'>";
+        echo "<div class='d-flex justify-content-between align-items-center'>";
         echo "<div class='$bgColor mt-3 rounded-2 text-white text-center p-1 w-25' style='font-weight: bold; font-size: 1rem;'>";
         echo $status;
         echo "</div>";
@@ -131,14 +143,14 @@ $conn->close();
         <div class="modal-content">
             <div class="modal-header bg-primary">
                 <h5 class="modal-title text-light" id="registerEventModalLabel">Event Registration Form</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="registerEventForm" method="POST" action="open-register.php">
                     <input type="hidden" name="event_id" id="event_id">
                     <div class="form-group mb-3">
                         <label for="username">Name</label>
-                        <input type="text" name="name" id="name" class="form-control" required value="<?php echo htmlspecialchars($username); ?>" required>
+                        <input type="text" name="full_name" id="full_name" class="form-control" required value="<?php echo htmlspecialchars($username); ?>" required>
                     </div>
                     <div class="form-group mb-3 ">
                         <label for="email">Email</label>
@@ -146,7 +158,7 @@ $conn->close();
                     </div>
                     <div class="form-group mb-3">
                         <label for="tickets">Number of Tickets</label>
-                        <input type="number" name="tickets" id="tickets" class="form-control" min="1" max="1" value="1" required>
+                        <input type="number" name="tickets" id="tickets" class="form-control" min="1" max="10" value="1" required>
                     </div>
                     <div class="text-center">
                         <button type="submit" class="btn btn-primary">Register</button>

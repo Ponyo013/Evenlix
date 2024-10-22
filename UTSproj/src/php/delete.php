@@ -6,6 +6,18 @@ $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
+
+        $event_id = $row['id_events']; // Assuming this is the column name for the event ID
+        $ticket_query = "SELECT SUM(tickets) AS registered_participants FROM registrations WHERE event_id = $event_id";
+        $ticket_result = $conn->query($ticket_query);
+
+        // Set default registered participants to 0 if there are no ticket sales
+        $registered_participants = 0;
+        if ($ticket_result) {
+            $ticket_row = $ticket_result->fetch_assoc();
+            $registered_participants = $ticket_row['registered_participants'] ?? 0;
+        } 
+
         echo "<div class='col-lg-5 mb-5 mx-4'>";
         echo "<div class='card overflow-hidden hover-img'>";
         echo "<div class='position-relative'>";
@@ -59,20 +71,9 @@ if ($result->num_rows > 0) {
         echo "<path stroke='none' d='M0 0h24v24H0z' fill='none'/>";
         echo "<path d='M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0' />";
         echo "<path d='M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2' />";
-        echo "</svg>" . $row['max_capacity'];
+        echo "</svg> " . $registered_participants . '/' . $row['max_capacity'];
         echo "</div>";
      
-        echo "<div class='d-flex justify-content-center align-items-center'>";
-        echo "<a class='btn btn-danger btn-sm rounded-3' data-bs-toggle='modal' data-bs-target='#deleteModal' data-id='" . $row['id_events'] . "'>";
-        echo "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='icon icon-tabler icon-tabler-trash'>";
-        echo "<path stroke='none' d='M0 0h24v24H0z' fill='none'/>";
-        echo "<path d='M4 7l16 0' />";
-        echo "<path d='M10 11l0 6' />";
-        echo "<path d='M14 11l0 6' />";
-        echo "<path d='M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12' />";
-        echo "<path d='M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3' />";
-        echo "</svg></a>";
-        echo "</div>";
         echo "</div>";
         $status = ucfirst($row['status']);
         $bgColor = '';
@@ -81,28 +82,39 @@ if ($result->num_rows > 0) {
             case 'open':
                 $bgColor = 'bg-success';
                 break;
-            case 'closed':
-                $bgColor = 'bg-dark'; 
+                case 'closed':
+                    $bgColor = 'bg-dark'; 
+                    break;
+                    case 'canceled':
+                        $bgColor = 'bg-danger'; 
                 break;
-            case 'canceled':
-                $bgColor = 'bg-danger'; 
-                break;
-            default:
+                default:
                 $bgColor = 'bg-secondary';
+            }
+            
+            echo "<div class='d-flex justify-content-between align-items-end'>";
+            echo "<div class='$bgColor mt-3 rounded-2 text-white text-center p-1 w-25' style='font-weight: bold; font-size: 1rem;'>";
+            echo $status;
+            echo "</div>"; 
+            echo "<a class='btn btn-danger btn-sm rounded-3' data-bs-toggle='modal' data-bs-target='#deleteModal' data-id='" . $row['id_events'] . "'>";
+            echo "<svg xmlns='http://www.w3.org/2000/svg' width='25' height='25' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='icon icon-tabler icon-tabler-trash'>";
+            echo "<path stroke='none' d='M0 0h24v24H0z' fill='none'/>";
+            echo "<path d='M4 7l16 0' />";
+            echo "<path d='M10 11l0 6' />";
+            echo "<path d='M14 11l0 6' />";
+            echo "<path d='M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12' />";
+            echo "<path d='M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3' />";
+            echo "</svg></a>";
+            echo "</div>";
+            echo "</div>"; 
+            echo "</div>"; 
+            
+            echo "</div>"; 
+            
         }
-        
-        echo "<div class='$bgColor mt-3 rounded-2 text-white text-center p-1 w-25' style='font-weight: bold; font-size: 1rem;'>";
-        echo $status;
-        echo "</div>"; 
-        echo "</div>"; 
-        echo "</div>"; 
-
-        echo "</div>"; 
-        
+    } else {
+        echo "<p class='text-center'>No events found.</p>";
     }
-} else {
-    echo "<p class='text-center'>No events found.</p>";
-}
-
+    
 $conn->close();
 ?>
