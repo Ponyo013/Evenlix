@@ -8,7 +8,7 @@ $location = $_POST['lokasi'];
 $description = $_POST['deskripsi'];
 $status = $_POST['status'];  
 
-$target_dir = "assets/images/blog/";
+$target_dir = "asset/images/blog/";
 
 if (!is_dir($target_dir)) {
     mkdir($target_dir, 0777, true); 
