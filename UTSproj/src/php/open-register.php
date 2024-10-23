@@ -25,10 +25,12 @@ if (isset($_POST['event_id'], $_POST['full_name'], $_POST['email'], $_POST['tick
     $row_event_capacity = $result_event_capacity->fetch_assoc();
     $max_capacity = $row_event_capacity['max_capacity'];
 
+    $available_tickets = $max_capacity - $total_registered_tickets;
+
     if (($total_registered_tickets + $tickets) > $max_capacity) {
         $_SESSION['message'] = [
             'type' => 'danger',
-            'text' => 'Registration failed. The event is full or not enough tickets are available.'
+            'text' => 'Registration failed. Only ' . $available_tickets . ' tickets are available for this event.'
         ];
     } else {
         $sql = "INSERT INTO registrations (user_id, event_id, tickets) VALUES (?, ?, ?)";

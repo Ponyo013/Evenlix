@@ -40,8 +40,13 @@
                       ?>
                     </tbody>
                 </table>
-            </div>
-            <button class="btn btn-success w-25" onclick="window.location.href='view-export.php';">Export List</button>
+              </div>
+              
+              <div class="d-flex justify-content-center mt-4" style='margin-bottom:160px;'>
+                <button class="btn btn-success w-25" onclick="window.location.href='view-export.php';">Export List</button>
+              </div>
+
+            
             <div class="py-6 px-6 text-center">
             <p class="mb-0 fs-4">Design and Developed by Team Jokowi</p>
             </div>
