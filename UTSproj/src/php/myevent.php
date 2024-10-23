@@ -21,15 +21,19 @@ if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
 
         $event_id = $row['id_events']; // Assuming this is the column name for the event ID
-        $ticket_query = "SELECT SUM(tickets) AS registered_participants FROM registrations WHERE event_id = $event_id";
-        $ticket_result = $conn->query($ticket_query);
+        $ticket_query = "SELECT tickets AS user_tickets FROM registrations WHERE event_id = ? AND user_id = ?";
+        $ticket_stmt = $conn->prepare($ticket_query);
+        $ticket_stmt->bind_param("ii", $event_id, $user_id);
+        $ticket_stmt->execute();
+        $ticket_result = $ticket_stmt->get_result();
 
-        // Set default registered participants to 0 if there are no ticket sales
-        $registered_participants = 0;
-        if ($ticket_result) {
+        // Set default user tickets to 0 if the user has not bought any tickets
+        $user_tickets = 0;
+        if ($ticket_result && $ticket_result->num_rows > 0) {
             $ticket_row = $ticket_result->fetch_assoc();
-            $registered_participants = $ticket_row['registered_participants'] ?? 0;
+            $user_tickets = $ticket_row['user_tickets'] ?? 0;
         }
+
 
         echo "<div class='col-lg-5 mb-5 mx-4'>";
         echo "<div class='card overflow-hidden hover-img'>";
@@ -67,7 +71,7 @@ if ($result->num_rows > 0) {
         echo "<button class='btn text-primary p-0' onclick='toggleDescription(" . $row['id_events'] . ")' id='toggle-btn-" . $row['id_events'] . "'>";
         echo (strlen($row['description']) > 100) ? "Read More" : "";
         echo "</button>";
-        echo "</p>";
+        echo "</p>"; 
 
         echo "<div class='d-flex align-items-center gap-4'>";
         echo "<div class='d-flex align-items-center gap-2'>";
@@ -84,7 +88,7 @@ if ($result->num_rows > 0) {
         echo "<path d='m12.594 23.258l-.012.002l-.071.035l-.02.004l-.014-.004l-.071-.036q-.016-.004-.024.006l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.016-.018m.264-.113l-.014.002l-.184.093l-.01.01l-.003.011l.018.43l.005.012l.008.008l.201.092q.019.005.029-.008l.004-.014l-.034-.614q-.005-.019-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.003-.011l.018-.43l-.003-.012l-.01-.01z'/>";
         echo "<path fill='currentColor' d='M5 6a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h7.17a3.001 3.001 0 0 1 5.66 0H19a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1h-1.17a3.001 3.001 0 0 1-5.66 0zM2 7a3 3 0 0 1 3-3h8a1 1 0 0 1 1 1a1 1 0 1 0 2 0a1 1 0 0 1 1-1h2a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3h-2a1 1 0 0 1-1-1a1 1 0 1 0-2 0a1 1 0 0 1-1 1H5a3 3 0 0 1-3-3zm13 2a1 1 0 0 1 1 1v.5a1 1 0 1 1-2 0V10a1 1 0 0 1 1-1m1 4.5a1 1 0 1 0-2 0v.5a1 1 0 1 0 2 0z'/>";
         echo "</g>";
-        echo "</svg>&nbsp;" . $registered_participants . 'X';
+        echo "</svg>&nbsp;" . $user_tickets . 'X';
         echo "</div>";
         
         
@@ -116,7 +120,7 @@ if ($result->num_rows > 0) {
             echo "<button class='btn btn-danger mt-3 rounded-2 text-white text-center p-1 w-25' style='font-weight: bold; font-size: 1rem;' onclick='setEventId(" . $row['registration_id'] . ")' data-bs-toggle='modal' data-bs-target='#cancelModal'>Cancel</button>";
         }
         
-        echo "</div></div></div>";
+        echo "</div></div>";
         echo "</div>"; 
         echo "</div>"; 
     }

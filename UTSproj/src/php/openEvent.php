@@ -32,6 +32,16 @@ if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
 
         $event_id = $row['id_events']; // Assuming this is the column name for the event ID
+
+        $check_registration_query = "SELECT COUNT(*) as total FROM registrations WHERE user_id = ? AND event_id = ?";
+        $stmt_check_registration = $conn->prepare($check_registration_query);
+        $stmt_check_registration->bind_param("ii", $user_id, $event_id);
+        $stmt_check_registration->execute();
+        $result_check_registration = $stmt_check_registration->get_result();
+        $row_check_registration = $result_check_registration->fetch_assoc();
+        $already_registered = $row_check_registration['total'] > 0;
+        $stmt_check_registration->close();
+
         $ticket_query = "SELECT SUM(tickets) AS registered_participants FROM registrations WHERE event_id = $event_id";
         $ticket_result = $conn->query($ticket_query);
 
@@ -122,9 +132,12 @@ if ($result->num_rows > 0) {
         echo "<div class='$bgColor mt-3 rounded-2 text-white text-center p-1 w-25' style='font-weight: bold; font-size: 1rem;'>";
         echo $status;
         echo "</div>";
-        echo "<button class='btn btn-dark mt-3 ms-3 rounded-2 text-white text-center p-1 w-25' style='font-weight: bold; font-size: 1rem;' data-bs-toggle='modal' data-bs-target='#registerEventModal' onclick='setEventId(" . $row['id_events'] . ")'>Register</button>";
+        if ($already_registered) {
+                echo "<button class='btn btn-dark mt-3 ms-3 rounded-2 text-white text-center p-1 w-25' style='font-weight: bold; font-size: 1rem;' disabled>Already registered</button>";
+            } else {
+                echo "<button class='btn btn-dark mt-3 ms-3 rounded-2 text-white text-center p-1 w-25' style='font-weight: bold; font-size: 1rem;' data-bs-toggle='modal' data-bs-target='#registerEventModal' onclick='setEventId(" . $row['id_events'] . ")'>Register</button>";
+            }
         echo "</div>";
-
 
         
         echo "</div>"; 
@@ -173,3 +186,4 @@ $conn->close();
         document.getElementById('event_id').value = eventId;
     }
 </script>
+<script src="../assets/js/read.js"></script> 

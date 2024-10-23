@@ -23,41 +23,40 @@
       <!-- Header -->
       <?php include 'header.php'; ?>
 
-      <div class="container-fluid">
-
-      <div class="row justify-content-center">
-        <?php
+      
+      <?php
           if (isset($_SESSION['message'])) {
-              $message = $_SESSION['message'];
-              echo '<div class="alert alert-' . $message['type'] . ' alert-dismissible fade show" role="alert">';
-              echo $message['text'];
-              echo '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
-              echo '</div>';
-              unset($_SESSION['message']);
+            $message = $_SESSION['message'];
+            echo '<div class="alert alert-' . $message['type'] . ' alert-dismissible fade show" role="alert">';
+            echo $message['text'];
+            echo '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+            echo '</div>';
+            unset($_SESSION['message']);
           }
-        ?>
+          ?>
 
-        <?php
+<?php
           if (isset($_SESSION['message-cancel'])) {
-              $message = $_SESSION['message-cancel'];
-              echo '<div class="alert alert-' . $message['type'] . ' alert-dismissible fade show" role="alert">';
-              echo $message['text'];
-              echo '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
-              echo '</div>';
-              unset($_SESSION['message-cancel']);
+            $message = $_SESSION['message-cancel'];
+            echo '<div class="alert alert-' . $message['type'] . ' alert-dismissible fade show" role="alert">';
+            echo $message['text'];
+            echo '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+            echo '</div>';
+            unset($_SESSION['message-cancel']);
           }
-        ?>
+          ?>
 
 
+<!-- Event -->
+
+<div class="container-fluid">
         <!-- Event -->
         <div class="row justify-content-center">
           <?php include 'myevent.php'; ?>
+          <div class="py-6 px-6 text-center">
+            <p class="mb-0 fs-4">Design and Developed by Team Jokowi</p>
+          </div>
         </div>
-
-        <div class="py-6 px-6 text-center">
-          <p class="mb-0 fs-4">Design and Developed by Team Jokowi</p>
-        </div>
-
       </div>
     </div>
 
